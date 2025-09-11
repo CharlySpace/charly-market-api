@@ -1,7 +1,7 @@
 package com.charly.market.auth.controller;
 
-import com.charly.market.auth.dto.AuthDtos;
-import com.charly.market.auth.dto.AuthDtos.TokenResponse;
+import com.charly.market.auth.model.dto.AuthDtos;
+import com.charly.market.auth.model.dto.AuthDtos.TokenResponse;
 import com.charly.market.auth.service.AuthService;
 import com.charly.market.global.security.JwtTokenProvider;
 import com.charly.market.global.security.UserPrincipal;
@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
   private final AuthService authService;
   private final JwtTokenProvider tokenProvider;
-
   @PostMapping("/login")
   public ResponseEntity<TokenResponse> login(@Valid @RequestBody AuthDtos.LoginRequest req) {
     return ResponseEntity.ok(authService.login(req));
