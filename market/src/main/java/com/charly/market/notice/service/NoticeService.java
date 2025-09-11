@@ -9,4 +9,5 @@ public interface NoticeService {
     void createNotice(CreateNoticeRequest request);
     List<NoticeResponse> findAll();
     NoticeResponse findByNoticeId(Long noticeId);
+    void delete(Long noticeId);
 }

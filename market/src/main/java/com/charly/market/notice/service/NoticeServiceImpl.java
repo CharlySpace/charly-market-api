@@ -53,4 +53,11 @@ public class NoticeServiceImpl implements NoticeService {
                 notice.getNoticeStatus()
         );
     }
+    @Transactional
+    @Override
+    public void delete(Long noticeId) {
+        Notice notice = noticeRepository.findByNoticeId(noticeId);
+        notice.deactivatedNoticeStatus();
+
+    }
 }

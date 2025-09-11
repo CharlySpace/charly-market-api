@@ -21,4 +21,8 @@ public class Notice extends BaseTimeEntity {
     private String noticeContent;
     private char noticeStatus;
 
+    public void deactivatedNoticeStatus() {
+        this.noticeStatus = 'N';
+    }
+
 }
