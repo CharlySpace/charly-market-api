@@ -20,6 +20,19 @@ public class AuctionItemFindAll {
     private String sellerAddress;
     private int categoryId;
     private int userId;
+
+
+//    public AuctionItemFindAll(AuctionItem item) {
+//        this.auctionTitle = item.getAuctionTitle();
+//        this.auctionContent = item.getAuctionContent();
+//        this.startingPrice = item.getStartingPrice();
+//        this.bidUnit = item.getBidUnit();
+//        this.auctionStartTime = item.getAuctionStartTime();
+//        this.auctionEndTime = item.getAuctionEndTime();
+//        this.sellerAddress = item.getSellerAddress();
+//        this.categoryId = item.getCategoryId();
+//        this.userId = item.getUserId();
+//    }
 }
 
 

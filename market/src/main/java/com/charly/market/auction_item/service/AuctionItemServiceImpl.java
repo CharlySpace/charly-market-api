@@ -33,10 +33,13 @@ public class AuctionItemServiceImpl implements AuctionItemService {
         auctionItemRepository.save(auctionItem1);
     }
 
-//    @Override
-//    public List<AuctionItemFindAll> getAllAuctionItems() {
-//        return auctionItemRepository;
-//    }
+    @Override
+    public List<AuctionItemFindAll> findAll() {
+        return auctionItemRepository.findAll()
+                .stream()
+                .map(AuctionItemFindAll::Auction) // Entity → DTO
+                .toList();
+    }
 
 
 }
