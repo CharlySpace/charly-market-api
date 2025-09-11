@@ -1,8 +1,8 @@
 package com.charly.market.auth.service;
 
-import com.charly.market.auth.dto.AuthDtos.LoginRequest;
-import com.charly.market.auth.dto.AuthDtos.RefreshRequest;
-import com.charly.market.auth.dto.AuthDtos.TokenResponse;
+import com.charly.market.auth.model.dto.AuthDtos.LoginRequest;
+import com.charly.market.auth.model.dto.AuthDtos.RefreshRequest;
+import com.charly.market.auth.model.dto.AuthDtos.TokenResponse;
 import com.charly.market.auth.repository.AuthRedisRepository;
 import com.charly.market.global.security.JwtProperties;
 import com.charly.market.global.security.JwtTokenProvider;
@@ -12,7 +12,6 @@ import com.charly.market.user.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import java.time.Duration;
-import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

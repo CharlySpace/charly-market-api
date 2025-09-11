@@ -1,4 +1,4 @@
-package com.charly.market.auth.dto;
+package com.charly.market.auth.model.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
