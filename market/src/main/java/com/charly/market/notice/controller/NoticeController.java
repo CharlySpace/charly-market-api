@@ -1,8 +1,7 @@
 package com.charly.market.notice.controller;
 
 import com.charly.market.notice.model.dto.CreateNoticeRequest;
-import com.charly.market.notice.model.dto.NoticeListResponse;
-import com.charly.market.notice.model.entity.Notice;
+import com.charly.market.notice.model.dto.NoticeResponse;
 import com.charly.market.notice.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +17,17 @@ public class NoticeController {
     private final NoticeService noticeService;
 
     @GetMapping()
-    public ResponseEntity<List<NoticeListResponse>> findNoticeList(){
-        List<NoticeListResponse> noticeListResponseList = noticeService.findAll();
-        return ResponseEntity.ok(noticeListResponseList);
+    public ResponseEntity<List<NoticeResponse>> findNoticeList(){
+        List<NoticeResponse> noticeListResponse = noticeService.findAll();
+        return ResponseEntity.ok(noticeListResponse);
+    }
+    // 검색
+    // 파라미터 아이디를 가져옴
+    @GetMapping("/{noticeId}")
+    public ResponseEntity<NoticeResponse> findNoticeById(@PathVariable Long noticeId){
+        NoticeResponse noticeResponse = noticeService.findByNoticeId(noticeId);
+        return ResponseEntity.ok(noticeResponse);
+
     }
 
     @PostMapping()

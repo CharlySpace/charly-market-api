@@ -16,9 +16,9 @@ public class Notice extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long notice_id;
-    private String notice_title;
-    private String notice_content;
-    private char notice_status;
+    private long noticeId;
+    private String noticeTitle;
+    private String noticeContent;
+    private char noticeStatus;
 
 }
