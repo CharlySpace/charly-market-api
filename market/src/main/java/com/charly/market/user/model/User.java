@@ -31,41 +31,45 @@ import lombok.NoArgsConstructor;
 public class User extends BaseTimeEntity {
 
   @Id
-  @Column(name = "user_id")
+  @Column
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long userId;
+  private Long id;
 
   @Column
-  private String id;
+  private String username;
 
   @Column(unique = true)
-  private String userEmail;
+  private String email;
 
   @Column
-  private String userName;
+  private String name;
 
   @Column(unique = true)
-  private String userNickname;
+  private String nickname;
 
   @Column
-  private String userPhone;
+  private String phone;
 
   @Column
-  private String userPassword;
+  private String password;
 
   @Column
   @Enumerated(EnumType.STRING)
-  private UserRole userRole;
+  private UserRole role;
 
   @Column
-  private String userStatus;
+  private String status;
 
   @Column
-  private int userBalance;
+  private int balance;
 
   @Column
   private int tradeCount;
 
   @Column
   private int storedPoint;
+
+  public void deactivatedUserStatus() {
+    this.status = "N";
+  }
 }

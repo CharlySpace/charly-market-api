@@ -6,10 +6,10 @@ import jakarta.validation.constraints.Pattern;
 
 public record CreateUserRequest(
     @NotBlank String id,
-    @NotBlank String userPassword,
-    @NotBlank String userName,
-    @NotBlank String userNickname,
-    @NotBlank @Email String userEmail,
-    @NotBlank @Pattern(regexp="^\\d{2,3}-\\d{3,4}-\\d{4}$") String userPhone
+    @NotBlank String password,
+    @NotBlank String name,
+    @NotBlank String nickname,
+    @NotBlank @Email String email,
+    @NotBlank @Pattern(regexp="^\\d{2,3}-\\d{3,4}-\\d{4}$") String phone
 ) {
 }
