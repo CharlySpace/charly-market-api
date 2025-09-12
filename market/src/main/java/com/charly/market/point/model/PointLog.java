@@ -1,5 +1,6 @@
 package com.charly.market.point.model;
 
+import com.charly.market.global.model.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PointLog {
+public class PointLog extends BaseTimeEntity {
     @Id
     @Column(name="point_log_id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)

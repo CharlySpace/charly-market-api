@@ -2,10 +2,14 @@ package com.charly.market.point.service;
 
 import com.charly.market.point.model.PointLog;
 import com.charly.market.point.model.dto.CreatePointLogRequest;
+import com.charly.market.point.model.dto.PointLogResponse;
 import com.charly.market.point.repository.PointLogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,5 +28,20 @@ public class PointLogServiceImpl implements PointLogService {
                 .user_id(0)
                 .build();
         pointLogRepository.save(pointLog);
+    }
+    @Override
+    public List<PointLogResponse> findAll(){
+        List<PointLog> pointLogs = pointLogRepository.findAll();
+        List<PointLogResponse> pointLogResponseList= new ArrayList<>();
+        for(PointLog pointLog:pointLogs){
+           PointLogResponse pointLogResponse=new PointLogResponse(
+                   pointLog.getTrade_type(),
+                   pointLog.getTrade_amount(),
+                   pointLog.getTrade_explanation(),
+                   pointLog.getPoint_amount()
+           );
+           pointLogResponseList.add(pointLogResponse);
+        }
+        return pointLogResponseList;
     }
 }

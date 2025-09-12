@@ -1,5 +1,6 @@
 package com.charly.market.notice.model.entity;
 
+import com.charly.market.global.model.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,13 +12,17 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Notice {
+public class Notice extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long notice_id;
-    private String notice_title;
-    private String notice_content;
-    private char notice_status;
+    private long noticeId;
+    private String noticeTitle;
+    private String noticeContent;
+    private char noticeStatus;
+
+    public void deactivatedNoticeStatus() {
+        this.noticeStatus = 'N';
+    }
 
 }
