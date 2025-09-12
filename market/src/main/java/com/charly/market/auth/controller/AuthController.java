@@ -52,9 +52,9 @@ public class AuthController {
     }
 
     UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
-    Long userId = principal.userId();
+    String username = principal.username();
 
-    authService.logout(userId, deviceId, jti);
+    authService.logout(username, deviceId, jti);
     return ResponseEntity.ok(Map.of("success", true));
   }
 
