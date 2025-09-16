@@ -19,14 +19,14 @@ public class Inquiry {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long inquiryId;
-    private String inquiryTitle;
-    private String inquiryContent;
-    private char inquiryStatus;
-    private String inquiryAnswer;
+    private long id;
+    private String title;
+    private String content;
+    private char status;
+    private String answer;
 
     public void deactivatedInquiryStatus() {
-        this.inquiryStatus = 'N';
+        this.status = 'N';
     }
 
 }
