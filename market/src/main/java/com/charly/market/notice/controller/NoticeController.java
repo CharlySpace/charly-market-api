@@ -39,9 +39,9 @@ public class NoticeController {
         return ResponseEntity.ok("공지사항");
     }
 
-    @DeleteMapping("/{noticeId}")
-    public ResponseEntity<String> deleteNotice(@PathVariable Long noticeId){
-        noticeService.delete(noticeId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteNotice(@PathVariable Long id){
+        noticeService.delete(id);
         return ResponseEntity.ok("삭제 성공");
     }
 
