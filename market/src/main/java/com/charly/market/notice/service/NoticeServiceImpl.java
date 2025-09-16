@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,9 +22,9 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public void createNotice(CreateNoticeRequest request) {
         Notice notice = Notice.builder()
-                .noticeTitle(request.noticeTitle())
-                .noticeContent(request.noticeContent())
-                .noticeStatus(request.noticeStatus())
+                .title(request.title())
+                .content(request.content())
+                .status(request.status())
                 .build();
 
         noticeRepository.save(notice);
@@ -35,9 +36,9 @@ public class NoticeServiceImpl implements NoticeService {
         List<NoticeResponse> noticeResponseList = new ArrayList<>();
         for (Notice notice : notices) {
             NoticeResponse noticeResponse = new NoticeResponse(
-                    notice.getNoticeTitle(),
-                    notice.getNoticeContent(),
-                    notice.getNoticeStatus()
+                    notice.getTitle(),
+                    notice.getContent(),
+                    notice.getStatus()
             );
             noticeResponseList.add(noticeResponse);
         }
@@ -45,19 +46,18 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public NoticeResponse findByNoticeId(Long noticeId) {
-        Notice notice = noticeRepository.findByNoticeId(noticeId);
-        return new NoticeResponse(
-                notice.getNoticeTitle(),
-                notice.getNoticeContent(),
-                notice.getNoticeStatus()
-        );
+    public NoticeResponse findById(Long id) {
+        Optional<Notice> notice = noticeRepository.findById(id);
+
+        return notice.map(value -> new NoticeResponse(value.getTitle(),
+                value.getContent(),
+                value.getStatus())).orElse(null);
     }
+
     @Transactional
     @Override
-    public void delete(Long noticeId) {
-        Notice notice = noticeRepository.findByNoticeId(noticeId);
-        notice.deactivatedNoticeStatus();
-
+    public void delete(Long id) {
+        Optional<Notice> notice = noticeRepository.findById(id);
+        notice.ifPresent(noticeRepository::delete);
     }
 }
