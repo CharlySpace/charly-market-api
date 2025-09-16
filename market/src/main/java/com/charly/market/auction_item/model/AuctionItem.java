@@ -43,8 +43,7 @@ public class AuctionItem {
     private String sellerAddress;
 
     @NotNull
-    @ColumnDefault("Y")
-    private char postingStatus;
+    private String postingStatus;
 
     // 외래키
     private int categoryId;

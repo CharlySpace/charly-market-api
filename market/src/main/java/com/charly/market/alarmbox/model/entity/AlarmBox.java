@@ -1,5 +1,6 @@
 package com.charly.market.alarmbox.model.entity;
 
+import com.charly.market.global.model.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,20 +12,31 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class AlarmBox {
+public class AlarmBox extends BaseTimeEntity {
 
         @Id
         @Column(name = "alarm_box_id")
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private int alarm_box_id;
+        private Long alarmBoxId;
 
         @Column(unique = true)
-        private String alarm_check;
+        private String alarmCheck;
 
         @Column(unique = true)
-        private String alarm_content;
+        private String alarmContent;
 
-        //외래키
-        private int userId;
-        private int alarmId;
+        @Column
+        private String alarmBoxStatus;
+        @Column
+        private int alarmBlance;
+        @Column
+        private int alarmCount;
+        @Column
+        private int alarmPoint;
+
+
+
+        public void deactivatedAlarmStatus() {
+            this.alarmBoxStatus = "N";
+        }
 }

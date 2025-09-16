@@ -26,10 +26,10 @@ public class AuctionItemController {
         return ResponseEntity.ok("경매물품 등록");
     }
 
-    @GetMapping
-    public ResponseEntity<List<AuctionItem>> getAllAuctionItems() {
-        List<AuctionItem> items = auctionItemService.getAllAuctionItems();
-        return ResponseEntity.ok(items);
-    };
+//    @GetMapping
+//    public ResponseEntity<List<AuctionItem>> getAllAuctionItems() {
+//        List<AuctionItem> items = auctionItemService.getAllAuctionItems();
+//        return ResponseEntity.ok(items);
+//    };
 
 }
