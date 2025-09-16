@@ -1,6 +1,7 @@
 package com.charly.market.auction_item.controller;
 
 import com.charly.market.auction_item.model.AuctionItem;
+import com.charly.market.auction_item.model.dto.AuctionItemListResponse;
 import com.charly.market.auction_item.model.dto.CreateAuctionItemRequest;
 import com.charly.market.auction_item.service.AuctionItemService;
 import com.charly.market.auction_item.service.AuctionItemServiceImpl;
@@ -26,10 +27,14 @@ public class AuctionItemController {
         return ResponseEntity.ok("경매물품 등록");
     }
 
-//    @GetMapping
-//    public ResponseEntity<List<AuctionItem>> getAllAuctionItems() {
-//        List<AuctionItem> items = auctionItemService.getAllAuctionItems();
-//        return ResponseEntity.ok(items);
-//    };
+
+    @GetMapping
+    public ResponseEntity<List<AuctionItemListResponse>> findAuctionList(){
+        List<AuctionItemListResponse> auctionItemList = auctionItemService.AuctionItemList();
+
+        return ResponseEntity.ok(auctionItemList);
+    }
+
+
 
 }
