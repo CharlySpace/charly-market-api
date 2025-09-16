@@ -34,7 +34,6 @@ public class UserController {
 
   @PostMapping()
   public ResponseEntity<String> signUp(@RequestBody CreateUserRequest req) {
-    System.out.println(req.toString());
     userService.signUp(req);
     return ResponseEntity.ok("회원가입 성공");
   }

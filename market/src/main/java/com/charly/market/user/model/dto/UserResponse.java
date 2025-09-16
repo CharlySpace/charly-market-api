@@ -1,6 +1,6 @@
 package com.charly.market.user.model.dto;
 
-import com.charly.market.user.model.User;
+import com.charly.market.user.model.entity.User;
 
 public record UserResponse(
     String id,
