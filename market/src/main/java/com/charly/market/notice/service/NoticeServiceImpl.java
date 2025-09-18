@@ -4,12 +4,14 @@ import com.charly.market.notice.model.dto.CreateNoticeRequest;
 import com.charly.market.notice.model.dto.NoticeResponse;
 import com.charly.market.notice.model.entity.Notice;
 import com.charly.market.notice.repository.NoticeRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,9 +23,9 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public void createNotice(CreateNoticeRequest request) {
         Notice notice = Notice.builder()
-                .noticeTitle(request.noticeTitle())
-                .noticeContent(request.noticeContent())
-                .noticeStatus(request.noticeStatus())
+                .title(request.title())
+                .content(request.content())
+                .status(request.status())
                 .build();
 
         noticeRepository.save(notice);
@@ -35,9 +37,9 @@ public class NoticeServiceImpl implements NoticeService {
         List<NoticeResponse> noticeResponseList = new ArrayList<>();
         for (Notice notice : notices) {
             NoticeResponse noticeResponse = new NoticeResponse(
-                    notice.getNoticeTitle(),
-                    notice.getNoticeContent(),
-                    notice.getNoticeStatus()
+                    notice.getTitle(),
+                    notice.getContent(),
+                    notice.getStatus()
             );
             noticeResponseList.add(noticeResponse);
         }
@@ -45,19 +47,22 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public NoticeResponse findByNoticeId(Long noticeId) {
-        Notice notice = noticeRepository.findByNoticeId(noticeId);
-        return new NoticeResponse(
-                notice.getNoticeTitle(),
-                notice.getNoticeContent(),
-                notice.getNoticeStatus()
-        );
+    public NoticeResponse findById(Long id) {
+        return noticeRepository.findById(id)
+                .map(notice -> new NoticeResponse(
+                        notice.getTitle(),
+                        notice.getContent(),
+                        notice.getStatus()))
+                .orElseThrow(() -> new EntityNotFoundException("Notice not found with id: " + id));
     }
+
+
     @Transactional
     @Override
-    public void delete(Long noticeId) {
-        Notice notice = noticeRepository.findByNoticeId(noticeId);
+    public void delete(Long id) {
+        Notice notice = noticeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Notice not found with id: " + id));
         notice.deactivatedNoticeStatus();
-
     }
+
 }

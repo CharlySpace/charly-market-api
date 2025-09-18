@@ -13,8 +13,8 @@ public interface InquiryService {
     List<InquiryResponse> findAll();
 
     //문의사항 검색
-    InquiryResponse findByInquiryId(Long inquiryId);
+    InquiryResponse findById(Long id);
 
     //문의사항 삭제
-    void delete(Long inquiryId);
+    void delete(Long id);
 }

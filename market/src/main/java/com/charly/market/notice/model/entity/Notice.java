@@ -16,13 +16,13 @@ public class Notice extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long noticeId;
-    private String noticeTitle;
-    private String noticeContent;
-    private char noticeStatus;
+    private long id;
+    private String title;
+    private String content;
+    private String status;
 
     public void deactivatedNoticeStatus() {
-        this.noticeStatus = 'N';
+        this.status = "N";
     }
 
 }
