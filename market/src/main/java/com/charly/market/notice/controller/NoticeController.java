@@ -1,5 +1,6 @@
 package com.charly.market.notice.controller;
 
+import com.charly.market.notice.model.dto.ChangeContentRequest;
 import com.charly.market.notice.model.dto.CreateNoticeRequest;
 import com.charly.market.notice.model.dto.NoticeResponse;
 import com.charly.market.notice.service.NoticeService;
@@ -45,4 +46,10 @@ public class NoticeController {
         return ResponseEntity.ok("삭제 성공");
     }
 
+    //업데이트
+    @PatchMapping("/content")
+    public ResponseEntity<String> changeContent(@RequestBody ChangeContentRequest req){
+        noticeService.changeContent(req);
+        return ResponseEntity.ok("변경 성공");
+    }
 }

@@ -1,11 +1,13 @@
 package com.charly.market.notice.service;
 
+import com.charly.market.notice.model.dto.ChangeContentRequest;
 import com.charly.market.notice.model.dto.CreateNoticeRequest;
 import com.charly.market.notice.model.dto.NoticeResponse;
 import com.charly.market.notice.model.entity.Notice;
 import com.charly.market.notice.repository.NoticeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.security.SecurityUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,6 +65,15 @@ public class NoticeServiceImpl implements NoticeService {
         Notice notice = noticeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Notice not found with id: " + id));
         notice.deactivatedNoticeStatus();
+    }
+
+    //업데이트
+    @Transactional
+    @Override
+    public void changeContent(ChangeContentRequest req) {
+        Notice notice = noticeRepository.findById(req.contentId()).orElseThrow();
+
+        notice.changeNoticeContent(req.content());
     }
 
 }
