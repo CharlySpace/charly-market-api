@@ -4,6 +4,7 @@ import com.charly.market.inquiry.model.dto.CreateInquiryRequest;
 import com.charly.market.inquiry.model.dto.InquiryResponse;
 import com.charly.market.inquiry.model.entity.Inquiry;
 import com.charly.market.inquiry.repository.InquiryRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,10 +23,10 @@ public class InquiryServiceImpl implements InquiryService {
     @Override
     public void createInquiry(CreateInquiryRequest request) {
         Inquiry inquiry = Inquiry.builder()
-                .inquiryTitle(request.inquiryTitle())
-                .inquiryContent(request.inquiryContent())
-                .inquiryStatus(request.inquiryStatus())
-                .inquiryAnswer(request.inquiryAnswer())
+                .title(request.title())
+                .content(request.content())
+                .status(request.status())
+                .answer(request.answer())
                 .build();
 
         inquiryRepository.save(inquiry);
@@ -38,10 +39,10 @@ public class InquiryServiceImpl implements InquiryService {
         List<InquiryResponse> inquiryResponseList = new ArrayList<>();
         for (Inquiry inquiry : inquiries) {
             InquiryResponse inquiryResponse = new InquiryResponse(
-                    inquiry.getInquiryTitle(),
-                    inquiry.getInquiryContent(),
-                    inquiry.getInquiryStatus(),
-                    inquiry.getInquiryAnswer()
+                    inquiry.getTitle(),
+                    inquiry.getAnswer(),
+                    inquiry.getStatus(),
+                    inquiry.getAnswer()
             );
             inquiryResponseList.add(inquiryResponse);
         }
@@ -50,20 +51,22 @@ public class InquiryServiceImpl implements InquiryService {
 
     //검색
     @Override
-    public InquiryResponse findByInquiryId(Long inquiryId) {
-        Inquiry inquiry = inquiryRepository.findByInquiryId(inquiryId);
-        return new InquiryResponse(
-                inquiry.getInquiryTitle(),
-                inquiry.getInquiryContent(),
-                inquiry.getInquiryStatus(),
-                inquiry.getInquiryAnswer()
-        );
+    public InquiryResponse findById(Long id) {
+        return inquiryRepository.findById(id)
+                .map(inquiry -> new InquiryResponse(
+                        inquiry.getTitle(),
+                        inquiry.getContent(),
+                        inquiry.getStatus(),
+                        inquiry.getAnswer()))
+                .orElseThrow(() -> new EntityNotFoundException("Inquiry not found with id: " + id));
     }
 
     // 삭제
+    @Transactional
     @Override
-    public void delete(Long inquiryId) {
-        Inquiry inquiry = inquiryRepository.findByInquiryId(inquiryId);
+    public void delete(Long id) {
+        Inquiry inquiry = inquiryRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Inquiry not found with id: " + id));
         inquiry.deactivatedInquiryStatus();
     }
 }

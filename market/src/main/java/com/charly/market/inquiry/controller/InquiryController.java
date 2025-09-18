@@ -5,6 +5,7 @@ import com.charly.market.inquiry.model.dto.InquiryResponse;
 import com.charly.market.inquiry.model.entity.Inquiry;
 import com.charly.market.inquiry.repository.InquiryRepository;
 import com.charly.market.inquiry.service.InquiryService;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,16 +37,16 @@ public class InquiryController {
     }
 
     //검색
-    @GetMapping("/{inquiryId}")
-    public ResponseEntity<InquiryResponse>  findInquiryById(@PathVariable Long inquiryId){
-        InquiryResponse inquiryResponse = inquiryService.findByInquiryId(inquiryId);
+    @GetMapping("/{id}")
+    public ResponseEntity<InquiryResponse>  findInquiryById(@PathVariable @NotNull Long id){
+        InquiryResponse inquiryResponse = inquiryService.findById(id);
         return ResponseEntity.ok(inquiryResponse);
     }
 
     //삭제
-    @DeleteMapping("/{inquiryId}")
-    public ResponseEntity<String> deleteInquiry(@PathVariable Long inquiryId){
-        inquiryService.delete(inquiryId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteInquiry(@PathVariable Long id){
+        inquiryService.delete(id);
         return ResponseEntity.ok("삭제 성공");
     }
 
