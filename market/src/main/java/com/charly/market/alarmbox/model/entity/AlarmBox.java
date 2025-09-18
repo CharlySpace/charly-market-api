@@ -15,28 +15,23 @@ import lombok.NoArgsConstructor;
 public class AlarmBox extends BaseTimeEntity {
 
         @Id
-        @Column(name = "alarm_box_id")
+        @Column(name = "id")
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long alarmBoxId;
-
-        @Column(unique = true)
-        private String alarmCheck;
-
-        @Column(unique = true)
-        private String alarmContent;
+        private Long id;
 
         @Column
-        private String alarmBoxStatus;
-        @Column
-        private int alarmBlance;
-        @Column
-        private int alarmCount;
-        @Column
-        private int alarmPoint;
+        private String status;
 
+        @Column
+        private String content;
 
 
         public void deactivatedAlarmStatus() {
-            this.alarmBoxStatus = "N";
+            this.status = "N";
+
+        }
+
+        public void changeAlarmboxStatus(String status) {
+            this.status = status;
         }
 }

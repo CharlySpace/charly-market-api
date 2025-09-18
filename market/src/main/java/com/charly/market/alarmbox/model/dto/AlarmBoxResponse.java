@@ -1,9 +1,11 @@
 package com.charly.market.alarmbox.model.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public record AlarmBoxResponse(
 
-    String alarm_check,
-    String alarm_content
+        @NotBlank String status,
+        @NotBlank String content
 ){
 
 }

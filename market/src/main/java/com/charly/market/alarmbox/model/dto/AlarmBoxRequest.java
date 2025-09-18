@@ -4,8 +4,9 @@ import jakarta.validation.constraints.NotBlank;
 
 public record AlarmBoxRequest(
 
-        @NotBlank String alarm_check,
-        @NotBlank String alarm_content
+
+        @NotBlank String status,
+        @NotBlank String content
 
 
 ) {
