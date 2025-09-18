@@ -8,6 +8,6 @@ import java.util.List;
 public interface NoticeService {
     void createNotice(CreateNoticeRequest request);
     List<NoticeResponse> findAll();
-    NoticeResponse findByNoticeId(Long noticeId);
-    void delete(Long noticeId);
+    NoticeResponse findById(Long id);
+    void delete(Long id);
 }
