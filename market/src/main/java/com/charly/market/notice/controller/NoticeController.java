@@ -3,6 +3,7 @@ package com.charly.market.notice.controller;
 import com.charly.market.notice.model.dto.CreateNoticeRequest;
 import com.charly.market.notice.model.dto.NoticeResponse;
 import com.charly.market.notice.service.NoticeService;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ public class NoticeController {
 
     private final NoticeService noticeService;
 
+    //조회
     @GetMapping()
     public ResponseEntity<List<NoticeResponse>> findNoticeList(){
         List<NoticeResponse> noticeListResponse = noticeService.findAll();
@@ -23,9 +25,9 @@ public class NoticeController {
     }
     // 검색
     // 파라미터 아이디를 가져옴
-    @GetMapping("/{noticeId}")
-    public ResponseEntity<NoticeResponse> findNoticeById(@PathVariable Long noticeId){
-        NoticeResponse noticeResponse = noticeService.findByNoticeId(noticeId);
+    @GetMapping("/{id}")
+    public ResponseEntity<NoticeResponse> findNoticeById(@PathVariable @NotNull Long id){
+        NoticeResponse noticeResponse = noticeService.findById(id);
         return ResponseEntity.ok(noticeResponse);
 
     }
@@ -37,9 +39,9 @@ public class NoticeController {
         return ResponseEntity.ok("공지사항");
     }
 
-    @DeleteMapping("/{noticeId}")
-    public ResponseEntity<String> deleteNotice(@PathVariable Long noticeId){
-        noticeService.delete(noticeId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteNotice(@PathVariable Long id){
+        noticeService.delete(id);
         return ResponseEntity.ok("삭제 성공");
     }
 
