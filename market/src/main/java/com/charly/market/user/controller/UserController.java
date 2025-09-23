@@ -1,5 +1,6 @@
 package com.charly.market.user.controller;
 
+import com.charly.market.user.model.dto.ChangePasswordRequest;
 import com.charly.market.user.model.dto.CreateUserRequest;
 import com.charly.market.user.model.dto.UserResponse;
 import com.charly.market.user.service.UserService;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,5 +44,11 @@ public class UserController {
   public ResponseEntity<String> signOut(@PathVariable String username) {
     userService.signOut(username);
     return ResponseEntity.ok("삭제 성공");
+  }
+
+  @PatchMapping("/password")
+  public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest req) {
+    userService.changePassword(req);
+    return ResponseEntity.ok("변경 성공");
   }
 }
