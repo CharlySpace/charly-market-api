@@ -25,7 +25,7 @@ public class PointLog extends BaseTimeEntity {
     @Column
     private Long tradeAmount;
 
-    @Column(nullable=true)
+    @Column
     private String explanation;
 
     @Column
