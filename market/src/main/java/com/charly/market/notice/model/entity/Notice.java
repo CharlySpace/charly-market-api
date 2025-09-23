@@ -25,4 +25,8 @@ public class Notice extends BaseTimeEntity {
         this.status = "N";
     }
 
+    public void changeNoticeContent(String content) {
+        this.content = content;
+    }
+
 }
