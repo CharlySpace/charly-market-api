@@ -1,15 +1,18 @@
 package com.charly.market.auction_item.service;
 
 import com.charly.market.auction_item.model.AuctionItem;
-import com.charly.market.auction_item.model.dto.AuctionItemListResponse;
+import com.charly.market.auction_item.model.dto.AuctionItemResponse;
 import com.charly.market.auction_item.model.dto.CreateAuctionItemRequest;
+import com.charly.market.auction_item.model.dto.UpdateAuctionItemContentRequest;
 import com.charly.market.auction_item.repository.AuctionItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,11 +25,12 @@ public class AuctionItemServiceImpl implements AuctionItemService {
     public void create(CreateAuctionItemRequest request) {
 
         AuctionItem auctionItem1 = AuctionItem.builder()
-                .auctionTitle(request.auctionTitle())
-                .auctionContent(request.auctionContent())
+                .title(request.title())
+                .content(request.content())
                 .startingPrice(request.startingPrice())
                 .bidUnit(request.bidUnit())
-                .sellerAddress(request.sellerAddress())
+                .address(request.address())
+                .postingStatus("Y")
                 .categoryId(3)
                 .userId(1)
                 .build();
@@ -35,15 +39,15 @@ public class AuctionItemServiceImpl implements AuctionItemService {
     }
 
     @Override
-    public List<AuctionItemListResponse> AuctionItemList() {
+    public List<AuctionItemResponse> AuctionItemList() {
         List<AuctionItem> auctionItemEntity = auctionItemRepository.findAll();
-        List<AuctionItemListResponse> findAuctionList = new ArrayList<>();
+        List<AuctionItemResponse> findAuctionList = new ArrayList<>();
 
         for(AuctionItem auction : auctionItemEntity){
 
-            AuctionItemListResponse findAll = new AuctionItemListResponse(
-                    auction.getAuctionTitle(),
-                    auction.getAuctionContent(),
+            AuctionItemResponse findAll = new AuctionItemResponse(
+                    auction.getTitle(),
+                    auction.getContent(),
                     auction.getStartingPrice(),
                     auction.getBidUnit(),
                     auction.getAuctionStartTime(),
@@ -55,6 +59,47 @@ public class AuctionItemServiceImpl implements AuctionItemService {
 
         };
         return findAuctionList;
+    }
+
+    @Override
+    public AuctionItemResponse auctionItemSearch(Long id) {
+
+        Optional<AuctionItem> auctionItem = auctionItemRepository.findById(id);
+
+        return auctionItem.map(item -> new AuctionItemResponse(
+                item.getTitle(),
+                item.getContent(),
+                item.getStartingPrice(),
+                item.getBidUnit(),
+                item.getAuctionStartTime(),
+                item.getAuctionEndTime(),
+                item.getUserId()
+        )).orElse(null);
+    }
+
+    @Transactional
+    @Override
+    public void delete(Long id) {
+
+        Optional<AuctionItem> auctionItemOptional = auctionItemRepository.findById(id);
+
+        auctionItemOptional.ifPresent(auctionItem -> auctionItem.changePostingStatus());
+
+    }
+
+    @Override
+    @Transactional
+    @Query()
+    public void changeContentRequest(Long auctionId ,UpdateAuctionItemContentRequest upa) {
+        Optional<AuctionItem> auctionItem = auctionItemRepository.findById(auctionId);
+        auctionItem.ifPresent(auctionItem1 -> auctionItem1.changeContent(upa.newContent()));
+
+        //        AuctionItem auctionItem = auctionItemRepository.findById(auctionId).orElseThrow();
+//        auctionItem.changeContent(upa.newContent());
+
+//        auctionItemRepository.updateContent(auctionId, upa.newContent());
+
+
     }
 
 
