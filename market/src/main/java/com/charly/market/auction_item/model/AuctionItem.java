@@ -21,13 +21,14 @@ public class AuctionItem extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long auctionId;
+    @Column(name = "auction_id")
+    private Long id;
 
     @NotNull
-    private String auctionTitle;
+    private String title;
 
     @NotNull
-    private String auctionContent;
+    private String content;
 
     @NotNull
     private long startingPrice;
@@ -42,11 +43,17 @@ public class AuctionItem extends BaseTimeEntity {
     private LocalDateTime auctionStartTime;
     private LocalDateTime auctionEndTime;
 
-    @NotNull
-    private String sellerAddress;
+    private String address; // 판매자 주소
 
-    @NotNull
-    private String postingStatus = "Y";
+    private String postingStatus;
+
+    public void changePostingStatus(){
+        this.postingStatus = "N";
+    }
+
+    public void changeContent(String content){
+        this.content = content;
+    }
 
     // 외래키
     private int categoryId;
