@@ -2,6 +2,7 @@ package com.charly.market.auction_item.controller;
 
 import com.charly.market.auction_item.model.dto.AuctionItemResponse;
 import com.charly.market.auction_item.model.dto.CreateAuctionItemRequest;
+import com.charly.market.auction_item.model.dto.UpdateAuctionItemContentRequest;
 import com.charly.market.auction_item.service.AuctionItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +50,15 @@ public class AuctionItemController {
         return ResponseEntity.ok("비활성화 성공");
     }
 
+
+
+
+    @PatchMapping("/{auctionId}/content")
+    public ResponseEntity<String> changeContentRequest (@PathVariable Long auctionId ,@RequestBody UpdateAuctionItemContentRequest upa){
+        auctionItemService.changeContentRequest(auctionId,upa);
+
+        return ResponseEntity.ok("변경 성공");
+    }
 
 
 

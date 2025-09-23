@@ -43,14 +43,16 @@ public class AuctionItem extends BaseTimeEntity {
     private LocalDateTime auctionStartTime;
     private LocalDateTime auctionEndTime;
 
-    @NotNull
     private String address; // 판매자 주소
 
-    @NotNull
-    private String postingStatus = "Y";
+    private String postingStatus;
 
     public void changePostingStatus(){
         this.postingStatus = "N";
+    }
+
+    public void changeContent(String content){
+        this.content = content;
     }
 
     // 외래키

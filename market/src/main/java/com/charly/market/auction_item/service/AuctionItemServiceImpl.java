@@ -3,8 +3,10 @@ package com.charly.market.auction_item.service;
 import com.charly.market.auction_item.model.AuctionItem;
 import com.charly.market.auction_item.model.dto.AuctionItemResponse;
 import com.charly.market.auction_item.model.dto.CreateAuctionItemRequest;
+import com.charly.market.auction_item.model.dto.UpdateAuctionItemContentRequest;
 import com.charly.market.auction_item.repository.AuctionItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +30,7 @@ public class AuctionItemServiceImpl implements AuctionItemService {
                 .startingPrice(request.startingPrice())
                 .bidUnit(request.bidUnit())
                 .address(request.address())
+                .postingStatus("Y")
                 .categoryId(3)
                 .userId(1)
                 .build();
@@ -81,6 +84,21 @@ public class AuctionItemServiceImpl implements AuctionItemService {
         Optional<AuctionItem> auctionItemOptional = auctionItemRepository.findById(id);
 
         auctionItemOptional.ifPresent(auctionItem -> auctionItem.changePostingStatus());
+
+    }
+
+    @Override
+    @Transactional
+    @Query()
+    public void changeContentRequest(Long auctionId ,UpdateAuctionItemContentRequest upa) {
+        Optional<AuctionItem> auctionItem = auctionItemRepository.findById(auctionId);
+        auctionItem.ifPresent(auctionItem1 -> auctionItem1.changeContent(upa.newContent()));
+
+        //        AuctionItem auctionItem = auctionItemRepository.findById(auctionId).orElseThrow();
+//        auctionItem.changeContent(upa.newContent());
+
+//        auctionItemRepository.updateContent(auctionId, upa.newContent());
+
 
     }
 
