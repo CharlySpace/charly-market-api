@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuctionItem extends BaseTimeEntity {
+public class AuctionItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
