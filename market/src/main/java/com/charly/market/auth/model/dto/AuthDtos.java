@@ -4,9 +4,9 @@ import jakarta.validation.constraints.NotBlank;
 
 public class AuthDtos {
   public record LoginRequest(
-      @NotBlank String email,
+      @NotBlank String username,
       @NotBlank String password,
-      @NotBlank String deviceId // 간단히 문자열 기기ID
+      String deviceId // 간단히 문자열 기기ID
   ) {}
   public record TokenResponse(
       String accessToken, long accessExpiresInSeconds,
@@ -14,6 +14,6 @@ public class AuthDtos {
   ) {}
   public record RefreshRequest(
       @NotBlank String refreshToken,
-      @NotBlank String deviceId
+      String deviceId
   ) {}
 }

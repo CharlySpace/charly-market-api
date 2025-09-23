@@ -28,34 +28,29 @@ public class JwtTokenProvider {
     this.hmacKey = Keys.hmacShaKeyFor(props.secret().getBytes(StandardCharsets.UTF_8));
   }
 
-  public TokenPair createTokens(Long userId, String email) {
+  public TokenPair createTokens(String username, String role) {
     String jti = UUID.randomUUID().toString();
-//    String access = buildToken(userId, email, roles, props.accessTtl(), jti, "access");
-    String access = buildToken(userId, email, props.accessTtl(), jti, "access");
-//    String refresh = buildToken(userId, email, roles, props.refreshTtl(), UUID.randomUUID().toString(), "refresh");
-    String refresh = buildToken(userId, email, props.refreshTtl(), UUID.randomUUID().toString(), "refresh");
+    String access = buildToken(username, role, props.accessTtl(), jti, "access");
+    String refresh = buildToken(username, role, props.refreshTtl(), UUID.randomUUID().toString(), "refresh");
     return new TokenPair(access, refresh, jti);
   }
 
-  public String createAccessOnly(Long userId, String email) {
-//    return buildToken(userId, email, roles, props.accessTtl(), UUID.randomUUID().toString(), "access");
-    return buildToken(userId, email, props.accessTtl(), UUID.randomUUID().toString(), "access");
+  public String createAccessOnly(String username, String role) {
+    return buildToken(username, role, props.accessTtl(), UUID.randomUUID().toString(), "access");
 
   }
 
-  private String buildToken(Long userId, String email,
-      java.time.Duration ttl, String jti, String typ) {
+  private String buildToken(String username, String role, java.time.Duration ttl, String jti, String typ) {
     Instant now = Instant.now();
     return Jwts.builder()
                .header().type("JWT").and()
                .issuer(props.issuer())
-               .subject(String.valueOf(userId))
+               .subject(username)
                .audience().add("smerp-api").and()
                .issuedAt(Date.from(now))
                .expiration(Date.from(now.plus(ttl)))
                .id(jti)
-               .claim("email", email)
-//               .claim("roles", roles)
+               .claim("role", role)
                .claim("typ", typ)
                .signWith(hmacKey)
                .compact();
@@ -77,20 +72,16 @@ public class JwtTokenProvider {
     return jws.getPayload().getId();
   }
 
-  public Long getUserId(Jws<Claims> jws) {
-    return Long.valueOf(jws.getPayload().getSubject());
+  public String getUsername(Jws<Claims> jws) {
+    return jws.getPayload().getSubject();
   }
 
   public Authentication toAuthentication(Jws<Claims> jws) {
-    Long userId = getUserId(jws);
+    String username = getUsername(jws);
     String email = jws.getPayload().get("email", String.class);
-    @SuppressWarnings("unchecked")
-    List<String> roles = jws.getPayload().get("roles", List.class);
-    Collection<SimpleGrantedAuthority> auths =
-        roles == null ? List.of() : roles.stream().map(SimpleGrantedAuthority::new).toList();
-
-    UserPrincipal principal = new UserPrincipal(userId, email, roles);
-    return new UsernamePasswordAuthenticationToken(principal, null, auths);
+    String role = jws.getPayload().get("role", String.class);
+    UserPrincipal principal = new UserPrincipal(username, email, role);
+    return new UsernamePasswordAuthenticationToken(principal, null);
   }
 
   public record TokenPair(String accessToken, String refreshToken, String accessJti) {}

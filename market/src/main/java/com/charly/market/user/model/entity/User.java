@@ -1,20 +1,15 @@
-package com.charly.market.user.model;
+package com.charly.market.user.model.entity;
 
 import com.charly.market.global.constant.UserRole;
 import com.charly.market.global.model.BaseTimeEntity;
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,41 +26,50 @@ import lombok.NoArgsConstructor;
 public class User extends BaseTimeEntity {
 
   @Id
-  @Column(name = "user_id")
+  @Column
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long userId;
+  private Long id;
 
   @Column
-  private String id;
+  private String username; // 설명
 
   @Column(unique = true)
-  private String userEmail;
+  private String email;
 
   @Column
-  private String userName;
+  private String name;
 
   @Column(unique = true)
-  private String userNickname;
+  private String nickname;
 
   @Column
-  private String userPhone;
+  private String phone;
 
   @Column
-  private String userPassword;
+  private String password;
 
   @Column
   @Enumerated(EnumType.STRING)
-  private UserRole userRole;
+  private UserRole role;
 
   @Column
-  private String userStatus;
+  private String status;
 
   @Column
-  private int userBalance;
+  private int balance;
 
   @Column
   private int tradeCount;
 
   @Column
   private int storedPoint;
+
+  public void deactivatedUserStatus() {
+    this.status = "N";
+  }
+
+  public void changePassword(String password) {
+    this.password = password;
+  }
+
 }
