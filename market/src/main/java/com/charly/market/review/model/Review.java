@@ -27,8 +27,6 @@ public class Review extends BaseTimeEntity {
     @NotNull
     private String content;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
-    private LocalDateTime updatedAt;
 
     private String reviewStatus = "Y";
 
@@ -39,5 +37,14 @@ public class Review extends BaseTimeEntity {
     private long revieweeId; // 판매자id
     @Comment("물품 id")
     private long auctionId; // 물품id
+
+    public void changePostingStatus(){
+        this.reviewStatus = "N";
+    }
+
+    public void changeReviewStar(long reviewStar){
+        this.reviewStar = reviewStar;
+    }
+
 
 }
