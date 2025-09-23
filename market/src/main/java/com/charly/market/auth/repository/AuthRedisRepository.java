@@ -12,22 +12,22 @@ public class AuthRedisRepository {
 
   private final StringRedisTemplate redis;
 
-  private static String refreshKey(Long userId, String deviceId) {
-    return "refresh:%d:%s".formatted(userId, deviceId);
+  private static String refreshKey(String username, String deviceId) {
+    return "refresh:%s:%s".formatted(username, deviceId);
   }
   private static String blKey(String jti) { return "bl:access:%s".formatted(jti); }
 
-  public void saveRefresh(Long userId, String deviceId, String refreshToken, Duration ttl) {
-    redis.opsForValue().set(refreshKey(userId, deviceId), refreshToken, ttl);
+  public void saveRefresh(String username, String deviceId, String refreshToken, Duration ttl) {
+    redis.opsForValue().set(refreshKey(username, deviceId), refreshToken, ttl);
   }
 
-  public Optional<String> getRefresh(Long userId, String deviceId) {
-    String val = redis.opsForValue().get(refreshKey(userId, deviceId));
+  public Optional<String> getRefresh(String username, String deviceId) {
+    String val = redis.opsForValue().get(refreshKey(username, deviceId));
     return Optional.ofNullable(val);
   }
 
-  public void deleteRefresh(Long userId, String deviceId) {
-    redis.delete(refreshKey(userId, deviceId));
+  public void deleteRefresh(String username, String deviceId) {
+    redis.delete(refreshKey(username, deviceId));
   }
 
   public void blacklistAccessJti(String jti, Duration ttl) {
