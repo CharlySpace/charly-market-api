@@ -23,7 +23,7 @@ public class Review extends BaseTimeEntity {
     private Long id;
 
     @NotNull
-    private long reviewStar;
+    private double reviewStar;
     @NotNull
     private String content;
 
@@ -42,7 +42,7 @@ public class Review extends BaseTimeEntity {
         this.reviewStatus = "N";
     }
 
-    public void changeReviewStar(long reviewStar){
+    public void changeReviewStar(double reviewStar){
         this.reviewStar = reviewStar;
     }
 

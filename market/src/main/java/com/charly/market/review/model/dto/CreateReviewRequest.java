@@ -1,7 +1,7 @@
 package com.charly.market.review.model.dto;
 
 public record CreateReviewRequest(
-        long reviewStar,
+        double reviewStar,
         String content
 
 ) {

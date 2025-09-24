@@ -2,6 +2,8 @@ package com.charly.market.review.service;
 
 import com.charly.market.auction_item.model.AuctionItem;
 import com.charly.market.auction_item.model.dto.AuctionItemResponse;
+import com.charly.market.notice.model.dto.ChangeContentRequest;
+import com.charly.market.notice.model.entity.Notice;
 import com.charly.market.review.model.Review;
 import com.charly.market.review.model.dto.CreateReviewRequest;
 import com.charly.market.review.model.dto.ReviewResponse;
@@ -96,7 +98,16 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void changeReviewStar(Long reviewId, UpdateReviewStarRequest urs) {
         Optional<Review> reviewItem = reviewRepository.findById(reviewId);
-        reviewItem.ifPresent(r -> r.changeReviewStar(urs.newReviewStar()));
+        reviewItem.ifPresent(r -> r.changeReviewStar(urs.reviewStar()));
 
     }
+
+//    @Transactional
+//    @Override
+//    public void changeReviewStar(UpdateReviewStarRequest req) {
+//        Long id = 1L;
+//        Review review = reviewRepository.findById();
+//
+//        review.changeReviewStar(req.newReviewStar());
+//    }
 }

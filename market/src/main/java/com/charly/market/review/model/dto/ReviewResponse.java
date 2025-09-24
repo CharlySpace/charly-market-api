@@ -3,7 +3,7 @@ package com.charly.market.review.model.dto;
 import java.time.LocalDateTime;
 
 public record ReviewResponse(
-        long reviewStar,
+        double reviewStar,
         String content,
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
