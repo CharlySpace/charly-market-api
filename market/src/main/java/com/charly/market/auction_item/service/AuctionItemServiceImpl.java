@@ -89,7 +89,6 @@ public class AuctionItemServiceImpl implements AuctionItemService {
 
     @Override
     @Transactional
-    @Query()
     public void changeContentRequest(Long auctionId ,UpdateAuctionItemContentRequest upa) {
         Optional<AuctionItem> auctionItem = auctionItemRepository.findById(auctionId);
         auctionItem.ifPresent(auctionItem1 -> auctionItem1.changeContent(upa.newContent()));
