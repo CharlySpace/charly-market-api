@@ -21,6 +21,7 @@ public class AlarmBoxServiceImpl implements  AlarmBoxService {
 
     private final AlarmBoxRepository alarmBoxRepository;
 
+    //생성
     @Override
     public void createAlarmBox(AlarmBoxRequest request) {
         AlarmBox alarmbox = AlarmBox.builder()
@@ -31,6 +32,7 @@ public class AlarmBoxServiceImpl implements  AlarmBoxService {
                 alarmBoxRepository.save(alarmbox);
     }
 
+    // 조회
     @Override
         public List<AlarmBoxResponse> findAll(){
        List<AlarmBox> alarmBoxList = alarmBoxRepository.findAll();
@@ -45,6 +47,7 @@ public class AlarmBoxServiceImpl implements  AlarmBoxService {
         return alarmBoxListResponses;
         }
 
+        // 검색
     @Override
     public AlarmBoxResponse findByAlarmBoxId(Long id) {
         Optional<AlarmBox> alarmBox = alarmBoxRepository.findById(id);
@@ -55,6 +58,7 @@ public class AlarmBoxServiceImpl implements  AlarmBoxService {
                 )).orElse(null);
     }
 
+    // 삭제
     @Transactional
     @Override
     public void delete(Long id) {
@@ -63,17 +67,13 @@ public class AlarmBoxServiceImpl implements  AlarmBoxService {
         alarmBox.deactivatedAlarmStatus();
     }
 
-    @Override
-    public Optional<AlarmBox> findById(Long id) {
-        return Optional.empty();
-    }
 
+    // 수정
     @Transactional
     @Override
     public void changeStatus(ChangeStatusRequest req) {
         AlarmBox alarmBox = alarmBoxRepository.findById(req.id()).orElseThrow();
         alarmBox.changeAlarmboxStatus(req.status());
-
     }
 
 //    @Override
