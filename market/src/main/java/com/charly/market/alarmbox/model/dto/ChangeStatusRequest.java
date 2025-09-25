@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 
     public record ChangeStatusRequest(
 
-            @NotBlank long id,
+            @NotBlank Long id,
             @NotBlank String status
 
     ){
