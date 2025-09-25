@@ -9,31 +9,37 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="point_log")
-
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class PointLog extends BaseTimeEntity {
     @Id
-    @Column(name="point_log_id")
+    @Column(name="id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long point_log_id;
-
-    @Column(nullable=false)
-    private String trade_type;
-
-    @Column(nullable=false)
-    private Long trade_amount;
-
-    @Column(nullable=true)
-    private String trade_explanation;
+    private Long id;
 
     @Column
-    private int bid_id;
-    private int user_id;
+    private String type;
 
-    @Column(nullable=false)
-    private Long point_amount;
+    @Column
+    private Long tradeAmount;
 
+    @Column
+    private String explanation;
+
+    @Column
+    private int bidId;
+    private int userId;
+
+    @Column
+    private int pointAmount ;//point_amount
+
+    public void changePointTypeStatus(){
+        this.type="T";
+    }
+
+    public void changeExplanation(String newExplanation){
+        this.explanation=newExplanation;
+    }
 }
