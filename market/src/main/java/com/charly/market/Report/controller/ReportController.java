@@ -1,0 +1,47 @@
+package com.charly.market.Report.controller;
+
+import com.charly.market.Report.model.dto.CreateReportRequest;
+import com.charly.market.Report.model.dto.ReportResponse;
+import com.charly.market.Report.repository.ReportRepository;
+import com.charly.market.Report.service.ReportService;
+import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("/api/v1/report")
+public class ReportController {
+    private final ReportService reportService;
+    private final ReportRepository reportRepository;
+
+    //등록
+    @PostMapping
+    public ResponseEntity<String> createReport(@RequestBody CreateReportRequest request){
+        System.out.println(request.toString());
+        reportService.createReport(request);
+        return ResponseEntity.ok("신고");
+    }
+
+    //조회
+    @GetMapping
+    public ResponseEntity<List<ReportResponse>> findReportList() {
+        List<ReportResponse> reportListResponses = reportService.findAll();
+        return ResponseEntity.ok(reportListResponses);
+    }
+    //검색
+    @GetMapping("/{id}")
+    public ResponseEntity<ReportResponse>  findCategoryById(@PathVariable @NotNull Long id){
+        ReportResponse reportResponse = reportService.findById(id);
+        return ResponseEntity.ok(reportResponse);
+    }
+    //삭제
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteReport(@PathVariable Long id){
+        reportService.delete(id);
+        return ResponseEntity.ok("삭제 성공");
+    }
+}
