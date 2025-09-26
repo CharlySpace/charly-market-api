@@ -3,6 +3,7 @@ package com.charly.market.point.controller;
 import com.charly.market.point.model.dto.ChangeExplanationRequest;
 import com.charly.market.point.model.dto.CreatePointLogRequest;
 import com.charly.market.point.model.dto.PointLogResponse;
+import com.charly.market.point.repository.PointLogRepository;
 import com.charly.market.point.service.PointLogService;
 import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
@@ -17,6 +18,8 @@ import java.util.List;
 @RequestMapping("/api/v1/point")
 public class PointLogController {
     private final PointLogService pointLogService;
+    private final PointLogRepository pointLogRepository;
+
     @GetMapping()
     public ResponseEntity<List<PointLogResponse>> findPointLog(){
         List<PointLogResponse> pointLogResponseList = pointLogService.findAll();
@@ -36,8 +39,8 @@ public class PointLogController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<String>  delete(@PathVariable @NonNull Long id){
-        pointLogService.delete(id);
-        return ResponseEntity.ok("포인트 타입 수정 성공");
+        pointLogRepository.deleteById(id);
+        return ResponseEntity.ok("포인트 기록 삭제 성공");
     }
     @PatchMapping("/explanation")
     public ResponseEntity<String>  changeExplanation(@RequestBody ChangeExplanationRequest request){
