@@ -1,0 +1,78 @@
+package com.charly.market.auction_bid.service;
+
+import com.charly.market.auction_bid.model.AuctionBid;
+import com.charly.market.auction_bid.model.dto.BidResponse;
+import com.charly.market.auction_bid.model.dto.CreateBidRequest;
+import com.charly.market.auction_bid.model.dto.SuccessfulBidRequest;
+import com.charly.market.auction_bid.repository.AuctionBidRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class AuctionBidServiceImpl implements AuctionBidService{
+    private final AuctionBidRepository repository;
+
+    @Override
+    public void create(CreateBidRequest request) {
+        AuctionBid bid = AuctionBid.builder()
+                .bidAmount(request.bidAmount())
+                .auctionId(1)
+                .userId(2)
+                .build();
+
+        repository.save(bid);
+    }
+
+    @Override
+    public List<BidResponse> bidList() {
+        List<AuctionBid> bidEntityList = repository.findAll();
+        List<BidResponse> bidResponses = new ArrayList<>();
+
+        for (AuctionBid bid : bidEntityList) {
+
+            BidResponse findAll = new BidResponse(
+                    bid.getId(),
+                    bid.getBidAmount(),
+                    bid.getCreatedAt(),
+                    bid.getSuccessStatus(),
+                    bid.getAuctionId(),
+                    bid.getUserId()
+            );
+
+            bidResponses.add(findAll);
+
+        }
+
+        return bidResponses;
+    }
+
+    @Override
+    public BidResponse bidItemSearch(Long bidId) {
+        Optional<AuctionBid> bidItem = repository.findById(bidId);
+        return bidItem.map(b -> new BidResponse(
+                b.getId(),
+                b.getBidAmount(),
+                b.getCreatedAt(),
+                b.getSuccessStatus(),
+                b.getAuctionId(),
+                b.getAuctionId()
+        )).orElse(null);
+    }
+
+    @Override // delete 없을예정
+    public void delete(Long bidId) {}
+
+    @Transactional
+    @Override
+    public void successfulBid(Long bidId, SuccessfulBidRequest sbr) {
+        Optional<AuctionBid> bidItem = repository.findById(bidId);
+        bidItem.ifPresent(b -> b.successBid());
+    }
+}
