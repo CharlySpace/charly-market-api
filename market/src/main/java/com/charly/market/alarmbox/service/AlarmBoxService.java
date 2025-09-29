@@ -10,11 +10,23 @@ import java.util.Optional;
 
 public interface AlarmBoxService {
 
-    void createAlarmBox(AlarmBoxRequest request);
-    List<AlarmBoxResponse> findAll();
-    AlarmBoxResponse findByAlarmBoxId(Long AlarmBoxId);
-    void delete(Long AlarmBoxId);
-    Optional<AlarmBox> findById(Long id);
 
+    //생성
+    void createAlarmBox(AlarmBoxRequest request);
+
+    //전체 리스트 조회
+    List<AlarmBoxResponse> findAll();
+
+    // 검색 (PK 값으로 조회)
+    AlarmBoxResponse findByAlarmBoxId(Long AlarmBoxId);
+    //Optional<AlarmBox> findById(Long id);
+
+
+    // 삭제
+    void delete(Long AlarmBoxId);
+
+    // 수정
     void changeStatus(ChangeStatusRequest req);
+
+
 }
