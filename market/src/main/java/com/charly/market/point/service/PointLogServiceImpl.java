@@ -60,14 +60,6 @@ public class PointLogServiceImpl implements PointLogService {
 
     @Transactional
     @Override
-    public void delete(Long id) {
-        PointLog pointlog=pointLogRepository.findById(id)
-                .orElseThrow(()->new EntityNotFoundException("Point_log not found id:"+id));
-        pointlog.changePointTypeStatus();
-
-    }
-    @Transactional
-    @Override
     public void changExplanation(ChangeExplanationRequest request) {
        // Optional<PointLog> pointLog= pointLogRepository.findById(request.id());
        // pointLog.map(PointLog::getExplanation)

@@ -10,6 +10,6 @@ public interface PointLogService {
     void Serv(CreatePointLogRequest request);
     List<PointLogResponse> findAll();
     PointLogResponse findById(Long id);
-    void delete(Long id);
+   // void delete(Long id);
     void changExplanation(ChangeExplanationRequest request);
 }

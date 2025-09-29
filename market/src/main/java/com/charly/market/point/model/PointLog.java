@@ -35,9 +35,6 @@ public class PointLog extends BaseTimeEntity {
     @Column
     private int pointAmount ;//point_amount
 
-    public void changePointTypeStatus(){
-        this.type="T";
-    }
 
     public void changeExplanation(String newExplanation){
         this.explanation=newExplanation;
