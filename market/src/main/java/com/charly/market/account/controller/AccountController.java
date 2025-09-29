@@ -4,11 +4,9 @@ package com.charly.market.account.controller;
 import com.charly.market.account.model.dto.AccountRequest;
 import com.charly.market.account.model.dto.AccountResponse;
 import com.charly.market.account.model.dto.AccountUpdateRequest;
-import com.charly.market.account.model.entity.Account;
 import com.charly.market.account.repository.AccountRepository;
 import com.charly.market.account.service.AccountService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

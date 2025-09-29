@@ -5,7 +5,6 @@ import com.charly.market.account.model.dto.AccountUpdateRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.logging.Level;
 
 @Entity
 @Table(name="account")

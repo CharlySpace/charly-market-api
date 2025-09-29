@@ -6,7 +6,6 @@ import com.charly.market.account.model.dto.AccountUpdateRequest;
 import com.charly.market.account.model.entity.Account;
 import com.charly.market.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
