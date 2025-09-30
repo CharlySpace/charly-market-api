@@ -2,6 +2,8 @@ package com.charly.market.user.service;
 
 
 import com.charly.market.global.constant.UserRole;
+import com.charly.market.grade.model.entity.Grade;
+import com.charly.market.grade.service.DefaultGradeProvider;
 import com.charly.market.user.model.dto.ChangePasswordRequest;
 import com.charly.market.user.model.entity.User;
 import com.charly.market.user.model.dto.CreateUserRequest;
@@ -23,9 +25,11 @@ public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
+  private final DefaultGradeProvider defaultGradeProvider;
 
   @Override
   public void signUp(CreateUserRequest request) {
+
     User user = User.builder()
                     .username(request.id())
                     .password(passwordEncoder.encode(request.password()))
@@ -38,6 +42,7 @@ public class UserServiceImpl implements UserService {
                     .balance(0)
                     .tradeCount(0)
                     .storedPoint(0)
+                    .grade(defaultGradeProvider.getDefaultGrade())
                     .build();
 
     userRepository.save(user);
