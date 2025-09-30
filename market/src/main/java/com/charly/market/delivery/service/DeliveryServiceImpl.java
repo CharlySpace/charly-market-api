@@ -26,9 +26,6 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     public void create(CreateDeliveryRequest request) {
         Delivery d = Delivery.builder()
-                .sendId(1)
-                .receiverId(2)
-                .auctionId(1)
                 .build();
 
         deliveryRepository.save(d);

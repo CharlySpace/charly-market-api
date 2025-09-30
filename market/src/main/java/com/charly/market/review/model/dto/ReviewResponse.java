@@ -1,5 +1,8 @@
 package com.charly.market.review.model.dto;
 
+import com.charly.market.auction_item.model.AuctionItem;
+import com.charly.market.user.model.entity.User;
+
 import java.time.LocalDateTime;
 
 public record ReviewResponse(
@@ -8,8 +11,8 @@ public record ReviewResponse(
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
         String reviewStatus,
-        long reviewerId,
-        long revieweeId,
-        long auctionId
+        User reviewerId,
+        User revieweeId,
+        AuctionItem auctionId
 ) {
 }

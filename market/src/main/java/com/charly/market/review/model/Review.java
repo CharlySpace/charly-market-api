@@ -1,6 +1,8 @@
 package com.charly.market.review.model;
 
+import com.charly.market.auction_item.model.AuctionItem;
 import com.charly.market.global.model.BaseTimeEntity;
+import com.charly.market.user.model.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -31,12 +33,17 @@ public class Review extends BaseTimeEntity {
     private String reviewStatus = "Y";
 
     // fk
-    @Comment("작성자 id")
-    private long reviewerId; // 작성자id
-    @Comment("판매자 id")
-    private long revieweeId; // 판매자id
-    @Comment("물품 id")
-    private long auctionId; // 물품id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reviewer_id", nullable = false)
+    private User reviewer; // 작성자id
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reviewee_id" , nullable = false)
+    private User reviewee; // 판매자id
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "auction_id" , nullable = false)
+    private AuctionItem auction; // 물품id
 
     public void changePostingStatus(){
         this.reviewStatus = "N";

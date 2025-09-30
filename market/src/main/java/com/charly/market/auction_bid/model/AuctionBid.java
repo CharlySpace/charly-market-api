@@ -1,6 +1,8 @@
 package com.charly.market.auction_bid.model;
 
+import com.charly.market.auction_item.model.AuctionItem;
 import com.charly.market.global.model.BaseTimeEntity;
+import com.charly.market.user.model.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,8 +26,13 @@ public class AuctionBid extends BaseTimeEntity {
 
 
     //fk
-    private long auctionId; // 물품번호
-    private long userId; // 입찰자id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "auction_id", nullable = false)
+    private AuctionItem auctionId; // 물품번호
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User userId; // 입찰자id
 
     public void successBid(){ this.successStatus="Y";}
 }

@@ -31,8 +31,6 @@ public class AuctionItemServiceImpl implements AuctionItemService {
                 .bidUnit(request.bidUnit())
                 .address(request.address())
                 .postingStatus("Y")
-                .categoryId(3)
-                .userId(1)
                 .build();
 
         auctionItemRepository.save(auctionItem1);

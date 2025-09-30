@@ -23,8 +23,6 @@ public class AuctionBidServiceImpl implements AuctionBidService{
     public void create(CreateBidRequest request) {
         AuctionBid bid = AuctionBid.builder()
                 .bidAmount(request.bidAmount())
-                .auctionId(1)
-                .userId(2)
                 .build();
 
         repository.save(bid);
@@ -62,7 +60,7 @@ public class AuctionBidServiceImpl implements AuctionBidService{
                 b.getCreatedAt(),
                 b.getSuccessStatus(),
                 b.getAuctionId(),
-                b.getAuctionId()
+                b.getUserId()
         )).orElse(null);
     }
 

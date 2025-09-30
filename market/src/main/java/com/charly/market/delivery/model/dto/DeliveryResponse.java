@@ -1,5 +1,8 @@
 package com.charly.market.delivery.model.dto;
 
+import com.charly.market.auction_item.model.AuctionItem;
+import com.charly.market.user.model.entity.User;
+
 import java.time.LocalDateTime;
 
 public record DeliveryResponse(
@@ -8,9 +11,9 @@ public record DeliveryResponse(
         String deliveryStatus,
         LocalDateTime registeredAt,
         LocalDateTime finishedAt,
-        long sendId,
-        long receiverId,
-        long auctionId
+        User sendId,
+        User receiverId,
+        AuctionItem auctionId
 
 ) {
 }
