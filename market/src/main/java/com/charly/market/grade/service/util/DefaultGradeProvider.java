@@ -1,4 +1,4 @@
-package com.charly.market.grade.service;
+package com.charly.market.grade.service.util;
 
 import com.charly.market.grade.model.entity.Grade;
 import com.charly.market.grade.repository.GradeRepository;
