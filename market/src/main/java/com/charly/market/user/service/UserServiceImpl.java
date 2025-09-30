@@ -2,6 +2,7 @@ package com.charly.market.user.service;
 
 
 import com.charly.market.global.constant.UserRole;
+import com.charly.market.grade.service.util.DefaultGradeProvider;
 import com.charly.market.user.model.dto.ChangePasswordRequest;
 import com.charly.market.user.model.entity.User;
 import com.charly.market.user.model.dto.CreateUserRequest;
@@ -9,7 +10,6 @@ import com.charly.market.user.model.dto.UserResponse;
 import com.charly.market.user.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,9 +23,11 @@ public class UserServiceImpl implements UserService {
 
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
+  private final DefaultGradeProvider defaultGradeProvider;
 
   @Override
   public void signUp(CreateUserRequest request) {
+
     User user = User.builder()
                     .username(request.id())
                     .password(passwordEncoder.encode(request.password()))
@@ -38,6 +40,7 @@ public class UserServiceImpl implements UserService {
                     .balance(0)
                     .tradeCount(0)
                     .storedPoint(0)
+                    .grade(defaultGradeProvider.getDefaultGrade())
                     .build();
 
     userRepository.save(user);

@@ -20,7 +20,7 @@ public class UserLogServiceImpl implements UserLogService {
     return userLogRepository.search(request)
                             .map(log -> new UserLogResponse(
                                 log.getId(),
-                                log.getUserId(),
+                                log.getUser().getId(),
                                 log.getLogContent(),
                                 log.getColumnName()
                             ));
