@@ -5,6 +5,7 @@ import com.charly.market.notice.model.dto.CreateNoticeRequest;
 import com.charly.market.notice.model.dto.NoticeResponse;
 import com.charly.market.notice.model.entity.Notice;
 import com.charly.market.notice.repository.NoticeRepository;
+import com.charly.market.user.service.util.UserFinder;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.security.SecurityUtil;
@@ -21,6 +22,7 @@ import java.util.Optional;
 public class NoticeServiceImpl implements NoticeService {
 
     private final NoticeRepository noticeRepository;
+    private final UserFinder userFinder;
 
     @Override
     public void createNotice(CreateNoticeRequest request) {
@@ -28,6 +30,7 @@ public class NoticeServiceImpl implements NoticeService {
                 .title(request.title())
                 .content(request.content())
                 .status(request.status())
+                .adminUser(userFinder.getById(request.adminId()))
                 .build();
 
         noticeRepository.save(notice);
@@ -41,7 +44,8 @@ public class NoticeServiceImpl implements NoticeService {
             NoticeResponse noticeResponse = new NoticeResponse(
                     notice.getTitle(),
                     notice.getContent(),
-                    notice.getStatus()
+                    notice.getStatus(),
+                    notice.getAdminUser().getId()
             );
             noticeResponseList.add(noticeResponse);
         }
@@ -54,7 +58,8 @@ public class NoticeServiceImpl implements NoticeService {
                 .map(notice -> new NoticeResponse(
                         notice.getTitle(),
                         notice.getContent(),
-                        notice.getStatus()))
+                        notice.getStatus(),
+                        notice.getAdminUser().getId()))
                 .orElseThrow(() -> new EntityNotFoundException("Notice not found with id: " + id));
     }
 

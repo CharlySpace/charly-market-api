@@ -2,6 +2,7 @@ package com.charly.market.inquiry.service;
 
 import com.charly.market.inquiry.model.dto.CreateInquiryRequest;
 import com.charly.market.inquiry.model.dto.InquiryResponse;
+import com.charly.market.user.model.entity.User;
 
 import java.util.List;
 
@@ -15,6 +16,6 @@ public interface InquiryService {
     //문의사항 검색
     InquiryResponse findById(Long id);
 
-    //문의사항 삭제
-    void delete(Long id);
+    //문의사항 답변
+    void answerInquiry(Long id, Long adminId, String answer);
 }

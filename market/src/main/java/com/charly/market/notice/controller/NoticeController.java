@@ -13,7 +13,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/Notice")
+@RequestMapping("/api/v1/notice")
 public class NoticeController {
 
     private final NoticeService noticeService;

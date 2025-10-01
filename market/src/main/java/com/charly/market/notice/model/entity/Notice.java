@@ -1,6 +1,7 @@
 package com.charly.market.notice.model.entity;
 
 import com.charly.market.global.model.BaseTimeEntity;
+import com.charly.market.user.model.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +21,10 @@ public class Notice extends BaseTimeEntity {
     private String title;
     private String content;
     private String status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false) // DB 컬럼명
+    private User adminUser;
 
     public void deactivatedNoticeStatus() {
         this.status = "N";
