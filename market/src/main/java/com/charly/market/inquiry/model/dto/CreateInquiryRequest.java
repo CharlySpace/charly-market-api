@@ -6,6 +6,7 @@ public record CreateInquiryRequest (
         @NotBlank String title,
         @NotBlank String content,
         @NotBlank char status,
-        @NotBlank String answer
+        @NotBlank String answer,
+        @NotBlank Long userId
 ){
 }

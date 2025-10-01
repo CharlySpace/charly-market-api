@@ -1,5 +1,6 @@
 package com.charly.market.inquiry.controller;
 
+import com.charly.market.inquiry.model.dto.AnswerInquiryRequest;
 import com.charly.market.inquiry.model.dto.CreateInquiryRequest;
 import com.charly.market.inquiry.model.dto.InquiryResponse;
 import com.charly.market.inquiry.model.entity.Inquiry;
@@ -43,12 +44,16 @@ public class InquiryController {
         return ResponseEntity.ok(inquiryResponse);
     }
 
-    //삭제
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteInquiry(@PathVariable Long id){
-        inquiryService.delete(id);
-        return ResponseEntity.ok("삭제 성공");
+    //문의 답변
+    @PatchMapping("/{id}/answer")
+    public ResponseEntity<String> answerInquiry(
+            @PathVariable Long id,
+            @RequestBody AnswerInquiryRequest request
+    ) {
+        inquiryService.answerInquiry(id, request.adminId(), request.answer());
+        return ResponseEntity.ok("답변 완료 처리 성공");
     }
+
 
 
 }

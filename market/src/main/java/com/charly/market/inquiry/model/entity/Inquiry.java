@@ -1,10 +1,8 @@
 package com.charly.market.inquiry.model.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.charly.market.user.model.entity.User;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,8 +23,18 @@ public class Inquiry {
     private char status;
     private String answer;
 
-    public void deactivatedInquiryStatus() {
-        this.status = 'N';
+    public void answerInquiry(User adminUser, String answer) {
+        this.adminUser = adminUser;  // 관리자 등록
+        this.answer = answer;        // 답변 내용
+        this.status = 'N';           // 상태 완료
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false) // DB 컬럼명
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "admin_id", nullable = true) // DB 컬럼명
+    private User adminUser;
 
 }
