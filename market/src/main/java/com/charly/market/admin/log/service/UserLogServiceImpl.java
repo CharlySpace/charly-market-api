@@ -2,6 +2,7 @@ package com.charly.market.admin.log.service;
 
 import com.charly.market.admin.log.model.dto.UserLogResponse;
 import com.charly.market.admin.log.model.dto.UserLogSearchRequest;
+import com.charly.market.admin.log.model.entity.UserLog;
 import com.charly.market.admin.log.repository.UserLogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
