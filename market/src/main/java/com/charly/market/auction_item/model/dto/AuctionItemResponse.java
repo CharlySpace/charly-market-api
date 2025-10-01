@@ -12,7 +12,7 @@ public record AuctionItemResponse(
          long bidUnit,
          LocalDateTime auctionStartTime,
          LocalDateTime auctionEndTime,
-         User userId
+         Long userId
 ){
 
 

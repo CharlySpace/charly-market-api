@@ -10,7 +10,7 @@ public record BidResponse(
         long bidAmount,
         LocalDateTime createAt,
         String successStatus,
-        AuctionItem auctionId,
-        User userId
+        Long auctionId,
+        Long userId
 ) {
 }

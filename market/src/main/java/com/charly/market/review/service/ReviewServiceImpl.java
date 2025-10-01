@@ -2,6 +2,7 @@ package com.charly.market.review.service;
 
 import com.charly.market.auction_item.model.AuctionItem;
 import com.charly.market.auction_item.model.dto.AuctionItemResponse;
+import com.charly.market.auction_item.service.util.AuctionItemFinder;
 import com.charly.market.notice.model.dto.ChangeContentRequest;
 import com.charly.market.notice.model.entity.Notice;
 import com.charly.market.review.model.Review;
@@ -9,6 +10,9 @@ import com.charly.market.review.model.dto.CreateReviewRequest;
 import com.charly.market.review.model.dto.ReviewResponse;
 import com.charly.market.review.model.dto.UpdateReviewStarRequest;
 import com.charly.market.review.repository.ReviewRepository;
+import com.charly.market.user.model.entity.User;
+import com.charly.market.user.repository.UserRepository;
+import com.charly.market.user.service.util.UserFinder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,12 +30,19 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
+    private final UserFinder userFinder;
+    private final AuctionItemFinder auctionItemFinder;
+
 
     @Override
     public void create(CreateReviewRequest request) {
+
         Review review = Review.builder()
                 .reviewStar(request.reviewStar())
                 .content(request.content())
+                .reviewerId(userFinder.getById(request.reviewerId()))
+                .revieweeId(userFinder.getById(request.revieweeId()))
+                .auctionId(auctionItemFinder.getById(request.auctionId()))
                 .build();
 
         reviewRepository.save(review);
@@ -52,9 +63,9 @@ public class ReviewServiceImpl implements ReviewService {
                     review.getCreatedAt(),
                     review.getUpdatedAt(),
                     review.getReviewStatus(),
-                    review.getReviewer(),
-                    review.getReviewee(),
-                    review.getAuction()
+                    review.getReviewerId().getId(),
+                    review.getRevieweeId().getId(),
+                    review.getAuctionId().getId()
             );
 
             reviewResponses.add(findAll);
@@ -75,9 +86,9 @@ public class ReviewServiceImpl implements ReviewService {
                 item.getCreatedAt(),
                 item.getUpdatedAt(),
                 item.getReviewStatus(),
-                item.getReviewer(),
-                item.getReviewee(),
-                item.getAuction()
+                item.getReviewerId().getId(),
+                item.getRevieweeId().getId(),
+                item.getAuctionId().getId()
         )).orElse(null);
     }
 

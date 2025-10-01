@@ -5,6 +5,8 @@ import com.charly.market.auction_bid.model.dto.BidResponse;
 import com.charly.market.auction_bid.model.dto.CreateBidRequest;
 import com.charly.market.auction_bid.model.dto.SuccessfulBidRequest;
 import com.charly.market.auction_bid.repository.AuctionBidRepository;
+import com.charly.market.auction_item.service.util.AuctionItemFinder;
+import com.charly.market.user.service.util.UserFinder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,11 +20,16 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class AuctionBidServiceImpl implements AuctionBidService{
     private final AuctionBidRepository repository;
+    private final UserFinder userFinder;
+    private final AuctionItemFinder auctionItemFinder;
+
 
     @Override
     public void create(CreateBidRequest request) {
         AuctionBid bid = AuctionBid.builder()
                 .bidAmount(request.bidAmount())
+                .userId(userFinder.getById(request.userId()))
+                .auctionId(auctionItemFinder.getById(request.auctionId()))
                 .build();
 
         repository.save(bid);
@@ -40,8 +47,8 @@ public class AuctionBidServiceImpl implements AuctionBidService{
                     bid.getBidAmount(),
                     bid.getCreatedAt(),
                     bid.getSuccessStatus(),
-                    bid.getAuctionId(),
-                    bid.getUserId()
+                    bid.getAuctionId().getId(),
+                    bid.getUserId().getId()
             );
 
             bidResponses.add(findAll);
@@ -59,8 +66,8 @@ public class AuctionBidServiceImpl implements AuctionBidService{
                 b.getBidAmount(),
                 b.getCreatedAt(),
                 b.getSuccessStatus(),
-                b.getAuctionId(),
-                b.getUserId()
+                b.getAuctionId().getId(),
+                b.getUserId().getId()
         )).orElse(null);
     }
 

@@ -5,6 +5,10 @@ import com.charly.market.auction_item.model.dto.AuctionItemResponse;
 import com.charly.market.auction_item.model.dto.CreateAuctionItemRequest;
 import com.charly.market.auction_item.model.dto.UpdateAuctionItemContentRequest;
 import com.charly.market.auction_item.repository.AuctionItemRepository;
+import com.charly.market.category.model.entity.Category;
+import com.charly.market.category.service.CategoryService;
+import com.charly.market.category.service.util.CategoryFinder;
+import com.charly.market.user.service.util.UserFinder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
@@ -20,6 +24,10 @@ import java.util.Optional;
 public class AuctionItemServiceImpl implements AuctionItemService {
 
     private final AuctionItemRepository auctionItemRepository;
+    private final UserFinder userFinder;
+    private final CategoryFinder categoryFinder;
+
+
 
     @Override
     public void create(CreateAuctionItemRequest request) {
@@ -30,6 +38,8 @@ public class AuctionItemServiceImpl implements AuctionItemService {
                 .startingPrice(request.startingPrice())
                 .bidUnit(request.bidUnit())
                 .address(request.address())
+                .userId(userFinder.getById(request.userId()))
+                .categoryId(categoryFinder.getById(request.categoryId()))
                 .postingStatus("Y")
                 .build();
 
@@ -50,7 +60,7 @@ public class AuctionItemServiceImpl implements AuctionItemService {
                     auction.getBidUnit(),
                     auction.getAuctionStartTime(),
                     auction.getAuctionEndTime(),
-                    auction.getUserId()
+                    auction.getUserId().getId()
             );
 
             findAuctionList.add(findAll);
@@ -71,7 +81,7 @@ public class AuctionItemServiceImpl implements AuctionItemService {
                 item.getBidUnit(),
                 item.getAuctionStartTime(),
                 item.getAuctionEndTime(),
-                item.getUserId()
+                item.getUserId().getId()
         )).orElse(null);
     }
 

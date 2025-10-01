@@ -11,8 +11,8 @@ public record ReviewResponse(
         LocalDateTime createdAt,
         LocalDateTime updatedAt,
         String reviewStatus,
-        User reviewerId,
-        User revieweeId,
-        AuctionItem auctionId
+        Long reviewerId,
+        Long revieweeId,
+        Long auctionId
 ) {
 }

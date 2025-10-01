@@ -11,9 +11,9 @@ public record DeliveryResponse(
         String deliveryStatus,
         LocalDateTime registeredAt,
         LocalDateTime finishedAt,
-        User sendId,
-        User receiverId,
-        AuctionItem auctionId
+        Long sendId,
+        Long receiverId,
+        Long auctionId
 
 ) {
 }
