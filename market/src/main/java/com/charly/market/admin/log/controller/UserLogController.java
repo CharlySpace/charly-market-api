@@ -1,5 +1,6 @@
 package com.charly.market.admin.log.controller;
 
+import com.charly.market.admin.log.model.dto.PageResponse;
 import com.charly.market.admin.log.model.dto.UserLogResponse;
 import com.charly.market.admin.log.model.dto.UserLogSearchRequest;
 import com.charly.market.admin.log.model.entity.UserLog;
@@ -20,8 +21,8 @@ public class UserLogController {
   private final UserLogService userLogService;
 
   @GetMapping("/log")
-  public Page<UserLogResponse> getUserLog(UserLogSearchRequest request) {
-    return userLogService.searchLogs(request);
+  public PageResponse<UserLogResponse> getUserLog(UserLogSearchRequest request) {
+    return PageResponse.of(userLogService.searchLogs(request));
   }
 
 }
