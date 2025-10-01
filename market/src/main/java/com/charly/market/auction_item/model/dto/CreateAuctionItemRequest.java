@@ -5,7 +5,9 @@ public record CreateAuctionItemRequest(
         String content,
         long startingPrice,
         long bidUnit,
-        String address // 판매자 주소
+        String address,// 판매자 주소
+        Long categoryId,
+        Long userId
 
 ) {
 }

@@ -1,5 +1,7 @@
 package com.charly.market.auction_item.model.dto;
 
+import com.charly.market.user.model.entity.User;
+
 import java.time.LocalDateTime;
 
 
@@ -10,7 +12,7 @@ public record AuctionItemResponse(
          long bidUnit,
          LocalDateTime auctionStartTime,
          LocalDateTime auctionEndTime,
-         int userId
+         Long userId
 ){
 
 

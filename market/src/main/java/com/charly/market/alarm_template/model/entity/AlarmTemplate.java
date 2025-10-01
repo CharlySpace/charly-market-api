@@ -1,6 +1,7 @@
 package com.charly.market.alarm_template.model.entity;
 
 import com.charly.market.alarmbox.model.dto.ChangeStatusRequest;
+import com.charly.market.category.model.entity.Category;
 import com.charly.market.global.model.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,7 @@ public class AlarmTemplate extends BaseTimeEntity {
 
     @Column
     private String content;
+
 
     public void deactivatedAlarmTemplateStatus() {
         this.status = "N";

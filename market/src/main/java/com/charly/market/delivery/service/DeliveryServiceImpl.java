@@ -1,5 +1,6 @@
 package com.charly.market.delivery.service;
 
+import com.charly.market.auction_item.service.util.AuctionItemFinder;
 import com.charly.market.delivery.model.Delivery;
 import com.charly.market.delivery.model.dto.CreateDeliveryRequest;
 import com.charly.market.delivery.model.dto.DeliveryResponse;
@@ -7,6 +8,7 @@ import com.charly.market.delivery.model.dto.UpdateDeliveryNo;
 import com.charly.market.delivery.repository.DeliveryRepository;
 import com.charly.market.review.model.Review;
 import com.charly.market.review.model.dto.ReviewResponse;
+import com.charly.market.user.service.util.UserFinder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,13 +24,16 @@ import java.util.Optional;
 public class DeliveryServiceImpl implements DeliveryService {
 
     private final DeliveryRepository deliveryRepository;
+    private final UserFinder userFinder;
+    private final AuctionItemFinder auctionItemFinder;
+
 
     @Override
     public void create(CreateDeliveryRequest request) {
         Delivery d = Delivery.builder()
-                .sendId(1)
-                .receiverId(2)
-                .auctionId(1)
+                .sendId(userFinder.getById(request.sendId()))
+                .receiverId(userFinder.getById(request.receiverId()))
+                .auctionId(auctionItemFinder.getById(request.auctionId()))
                 .build();
 
         deliveryRepository.save(d);
@@ -47,9 +52,9 @@ public class DeliveryServiceImpl implements DeliveryService {
                     delivery.getDeliveryStatus(),
                     delivery.getRegisteredAt(),
                     delivery.getFinishedAt(),
-                    delivery.getSendId(),
-                    delivery.getReceiverId(),
-                    delivery.getAuctionId()
+                    delivery.getSendId().getId(),
+                    delivery.getReceiverId().getId(),
+                    delivery.getAuctionId().getId()
             );
 
             deliveryResponses.add(findAll);
@@ -69,9 +74,9 @@ public class DeliveryServiceImpl implements DeliveryService {
                 item.getDeliveryStatus(),
                 item.getRegisteredAt(),
                 item.getFinishedAt(),
-                item.getSendId(),
-                item.getReceiverId(),
-                item.getAuctionId()
+                item.getSendId().getId(),
+                item.getReceiverId().getId(),
+                item.getAuctionId().getId()
         )).orElse(null);
     }
 

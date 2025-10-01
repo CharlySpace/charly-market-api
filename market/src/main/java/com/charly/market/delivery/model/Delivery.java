@@ -1,6 +1,8 @@
 package com.charly.market.delivery.model;
 
+import com.charly.market.auction_item.model.AuctionItem;
 import com.charly.market.global.model.BaseTimeEntity;
+import com.charly.market.user.model.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,9 +33,17 @@ public class Delivery extends BaseTimeEntity {
 
 
     // fk
-    private long sendId; // 보낸사람
-    private long receiverId; // 수령한사람
-    private long auctionId; // 경매물품 id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "send_user_id" , nullable = false)
+    private User sendId; // 보낸사람
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "receiver_user_id", nullable = false)
+    private User receiverId; // 수령한사람
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "auction_id", nullable = false)
+    private AuctionItem auctionId; // 경매물품 id
 
 
 

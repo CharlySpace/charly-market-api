@@ -1,6 +1,8 @@
 package com.charly.market.auction_item.model;
 
+import com.charly.market.category.model.entity.Category;
 import com.charly.market.global.model.BaseTimeEntity;
+import com.charly.market.user.model.entity.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -56,6 +58,11 @@ public class AuctionItem {
     }
 
     // 외래키
-    private int categoryId;
-    private int userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category categoryId; // 카테고리id
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User userId; // 판매자
 }
