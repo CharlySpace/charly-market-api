@@ -1,6 +1,8 @@
 package com.charly.market.point.model;
 
+import com.charly.market.auction_bid.model.AuctionBid;
 import com.charly.market.global.model.BaseTimeEntity;
+import com.charly.market.user.model.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,9 +30,13 @@ public class PointLog extends BaseTimeEntity {
     @Column
     private String explanation;
 
-    @Column
-    private int bidId;
-    private int userId;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="bid_id")
+    private AuctionBid auctionBid;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="user_id",nullable=false)
+    private User user;
 
     @Column
     private int pointAmount ;//point_amount

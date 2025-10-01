@@ -5,6 +5,7 @@ import com.charly.market.account.model.dto.AccountResponse;
 import com.charly.market.account.model.dto.AccountUpdateRequest;
 import com.charly.market.account.model.entity.Account;
 import com.charly.market.account.repository.AccountRepository;
+import com.charly.market.user.service.util.UserFinder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,13 +18,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
-
+    private final UserFinder userFinder;
     @Override
     public void create(AccountRequest request) {
         Account account=Account.builder()
                 .bankName(request.bankName())
                 .accountNumber(request.accountNumber())
                 .bankOwner(request.bankOwner())
+                .user(userFinder.getById(request.userId()))
                 .build();
         accountRepository.save(account);
     }
@@ -37,7 +39,7 @@ public class AccountServiceImpl implements AccountService {
                    account.getBankName(),
                    account.getAccountNumber(),
                    account.getBankOwner(),
-                   account.getUserId()
+                   account.getUser().getId()
            );
            accountResponseList.add(accountResponse);
         }
