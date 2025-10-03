@@ -21,7 +21,7 @@ public class AuctionBid extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bid_id")
     private Long id; // bid_id
-    private long bidAmount; // 입찰가격
+    private Long bidAmount; // 입찰가격
     private String successStatus; // 낙찰여부
 
 

@@ -1,6 +1,8 @@
 package com.charly.market.auction_item.controller;
 
+import com.charly.market.admin.log.model.dto.PageResponse;
 import com.charly.market.auction_item.model.dto.AuctionItemResponse;
+import com.charly.market.auction_item.model.dto.AuctionItemSearchRequest;
 import com.charly.market.auction_item.model.dto.CreateAuctionItemRequest;
 import com.charly.market.auction_item.model.dto.UpdateAuctionItemContentRequest;
 import com.charly.market.auction_item.service.AuctionItemService;
@@ -33,6 +35,11 @@ public class AuctionItemController {
         List<AuctionItemResponse> auctionItemList = auctionItemService.AuctionItemList();
 
         return ResponseEntity.ok(auctionItemList);
+    }
+
+    @GetMapping("/search")
+    public PageResponse<AuctionItemResponse> searchAuctionList(AuctionItemSearchRequest request){
+        return PageResponse.of(auctionItemService.auctionItemSearch(request));
     }
 
     // id 값으로 1건 조회

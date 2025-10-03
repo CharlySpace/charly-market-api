@@ -8,12 +8,15 @@ import com.charly.market.notice.model.entity.Notice;
 import com.charly.market.review.model.Review;
 import com.charly.market.review.model.dto.CreateReviewRequest;
 import com.charly.market.review.model.dto.ReviewResponse;
+import com.charly.market.review.model.dto.ReviewSearchRequest;
 import com.charly.market.review.model.dto.UpdateReviewStarRequest;
 import com.charly.market.review.repository.ReviewRepository;
 import com.charly.market.user.model.entity.User;
 import com.charly.market.user.repository.UserRepository;
 import com.charly.market.user.service.util.UserFinder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,7 +60,7 @@ public class ReviewServiceImpl implements ReviewService {
         for (Review review : reviewEntityList) {
 
             ReviewResponse findAll = new ReviewResponse(
-
+                    review.getId(),
                     review.getReviewStar(),
                     review.getContent(),
                     review.getCreatedAt(),
@@ -77,10 +80,27 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public Page<ReviewResponse> searchReview(ReviewSearchRequest request) {
+
+        return reviewRepository.search(request).map(review -> new ReviewResponse(
+                review.getId(),
+                review.getReviewStar(),
+                review.getContent(),
+                review.getCreatedAt(),
+                review.getUpdatedAt(),
+                review.getReviewStatus(),
+                review.getReviewerId().getId(),
+                review.getRevieweeId().getId(),
+                review.getAuctionId().getId()
+        ));
+    }
+
+    @Override
     public ReviewResponse reviewItemSearch(Long reviewId) {
         Optional<Review> reviewItem = reviewRepository.findById(reviewId);
 
         return reviewItem.map(item -> new ReviewResponse(
+                item.getId(),
                 item.getReviewStar(),
                 item.getContent(),
                 item.getCreatedAt(),

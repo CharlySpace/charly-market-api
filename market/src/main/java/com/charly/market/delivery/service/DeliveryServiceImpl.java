@@ -4,12 +4,14 @@ import com.charly.market.auction_item.service.util.AuctionItemFinder;
 import com.charly.market.delivery.model.Delivery;
 import com.charly.market.delivery.model.dto.CreateDeliveryRequest;
 import com.charly.market.delivery.model.dto.DeliveryResponse;
+import com.charly.market.delivery.model.dto.DeliverySearchRequest;
 import com.charly.market.delivery.model.dto.UpdateDeliveryNo;
 import com.charly.market.delivery.repository.DeliveryRepository;
 import com.charly.market.review.model.Review;
 import com.charly.market.review.model.dto.ReviewResponse;
 import com.charly.market.user.service.util.UserFinder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +49,7 @@ public class DeliveryServiceImpl implements DeliveryService {
         for (Delivery delivery : deliveryList) {
 
             DeliveryResponse findAll = new DeliveryResponse(
+                    delivery.getId(),
                     delivery.getAddress(),
                     delivery.getDeliveryNo(),
                     delivery.getDeliveryStatus(),
@@ -65,10 +68,27 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     @Override
+    public Page<DeliveryResponse> deliverySearch(DeliverySearchRequest request) {
+        return deliveryRepository.search(request).map(delivery -> new DeliveryResponse(
+                delivery.getId(),
+                delivery.getAddress(),
+                delivery.getDeliveryNo(),
+                delivery.getDeliveryStatus(),
+                delivery.getRegisteredAt(),
+                delivery.getFinishedAt(),
+                delivery.getSendId().getId(),
+                delivery.getReceiverId().getId(),
+                delivery.getAuctionId().getId()
+        ));
+    }
+
+
+    @Override
     public DeliveryResponse findByDeliveryId(Long deliveryId) {
         Optional<Delivery> deliveryItem = deliveryRepository.findById(deliveryId);
 
         return deliveryItem.map(item -> new DeliveryResponse(
+                item.getId(),
                 item.getAddress(),
                 item.getDeliveryNo(),
                 item.getDeliveryStatus(),

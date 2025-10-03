@@ -22,7 +22,7 @@ public class Review extends BaseTimeEntity {
     private Long id;
 
     @NotNull
-    private double reviewStar;
+    private Double reviewStar;
     @NotNull
     private String content;
 

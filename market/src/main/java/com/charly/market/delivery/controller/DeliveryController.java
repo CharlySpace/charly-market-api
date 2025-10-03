@@ -1,8 +1,9 @@
 package com.charly.market.delivery.controller;
 
-import com.charly.market.delivery.model.Delivery;
+import com.charly.market.admin.log.model.dto.PageResponse;
 import com.charly.market.delivery.model.dto.CreateDeliveryRequest;
 import com.charly.market.delivery.model.dto.DeliveryResponse;
+import com.charly.market.delivery.model.dto.DeliverySearchRequest;
 import com.charly.market.delivery.model.dto.UpdateDeliveryNo;
 import com.charly.market.delivery.service.DeliveryService;
 
@@ -35,6 +36,11 @@ public class DeliveryController {
         List<DeliveryResponse> deliveryResponses = deliveryService.deliveryList();
 
         return ResponseEntity.ok(deliveryResponses);
+    }
+
+    @GetMapping("/search")
+    public PageResponse<DeliveryResponse> deliverySearchList(DeliverySearchRequest request){
+        return PageResponse.of(deliveryService.deliverySearch(request));
     }
 
 
