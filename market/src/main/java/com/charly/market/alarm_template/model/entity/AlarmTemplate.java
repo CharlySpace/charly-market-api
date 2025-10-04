@@ -27,6 +27,12 @@ public class AlarmTemplate extends BaseTimeEntity {
     private String content;
 
 
+    // fk
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false) // DB 컬럼명
+    private Category category;
+
+
     public void deactivatedAlarmTemplateStatus() {
         this.status = "N";
 
