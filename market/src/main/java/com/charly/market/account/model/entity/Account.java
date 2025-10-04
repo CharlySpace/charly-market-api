@@ -2,6 +2,7 @@ package com.charly.market.account.model.entity;
 
 
 import com.charly.market.account.model.dto.AccountUpdateRequest;
+import com.charly.market.user.model.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,10 +14,11 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name="account_id")
     private Long id;
 
     @Column
@@ -28,7 +30,9 @@ public class Account {
     @Column
     private String bankOwner;
 
-    private Long userId;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="user_id",nullable=false)
+    private User user;
 
     public void changeAccountContent(AccountUpdateRequest request){
         this.bankName= request.bankName();
