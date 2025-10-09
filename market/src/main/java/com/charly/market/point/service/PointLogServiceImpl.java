@@ -1,10 +1,12 @@
 package com.charly.market.point.service;
 
+import com.charly.market.auction_bid.service.utill.AuctionBidFinder;
 import com.charly.market.point.model.PointLog;
 import com.charly.market.point.model.dto.ChangeExplanationRequest;
 import com.charly.market.point.model.dto.CreatePointLogRequest;
 import com.charly.market.point.model.dto.PointLogResponse;
 import com.charly.market.point.repository.PointLogRepository;
+import com.charly.market.user.service.util.UserFinder;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,15 +22,17 @@ import java.util.List;
 public class PointLogServiceImpl implements PointLogService {
 
     private final PointLogRepository pointLogRepository;
+    private final UserFinder userFinder;
+    private final AuctionBidFinder auctionBidFinder;
     @Override
     public void Serv(CreatePointLogRequest request) {
         PointLog pointLog = PointLog.builder()
                 .type(request.type())
                 .tradeAmount(request.tradeAmount())
                 .explanation(request.explanation())
+                .auctionBid(auctionBidFinder.getById(request.auctionBidId()))
+                .user(userFinder.getById(request.userId()))
                 .pointAmount(request.pointAmount())
-                .bidId(0)
-                .seller(0)
                 .build();
         pointLogRepository.save(pointLog);
     }
@@ -41,6 +45,8 @@ public class PointLogServiceImpl implements PointLogService {
                    pointLog.getType(),
                    pointLog.getTradeAmount(),
                    pointLog.getExplanation(),
+                   pointLog.getAuctionBid().getId(),
+                   pointLog.getUser().getId(),
                    pointLog.getPointAmount()
            );
            pointLogResponseList.add(pointLogResponse);
@@ -52,10 +58,12 @@ public class PointLogServiceImpl implements PointLogService {
     public PointLogResponse findById(Long id) {
         return pointLogRepository.findById(id)
                 .map(pointLog ->  new PointLogResponse(
-            pointLog.getType(),
-            pointLog.getTradeAmount(),
-            pointLog.getExplanation(),
-            pointLog.getPointAmount())).orElseThrow(()-> new EntityNotFoundException("Point_log not found id:"+id));
+                        pointLog.getType(),
+                        pointLog.getTradeAmount(),
+                        pointLog.getExplanation(),
+                        pointLog.getAuctionBid().getId(),
+                        pointLog.getUser().getId(),
+                        pointLog.getPointAmount())).orElseThrow(()-> new EntityNotFoundException("Point_log not found id:"+id));
     }
 
     @Transactional
