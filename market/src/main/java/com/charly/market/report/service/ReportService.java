@@ -16,6 +16,6 @@ public interface ReportService {
     //신고 검색
     ReportResponse findById(Long id);
 
-    //신고 삭제
-    void delete(Long id);
+    //신고 처리 완료
+    void answerReport (Long reportId, Long adminId, String answer);
 }

@@ -1,5 +1,6 @@
 package com.charly.market.report.controller;
 
+import com.charly.market.report.model.dto.AnswerReportRequest;
 import com.charly.market.report.model.dto.CreateReportRequest;
 import com.charly.market.report.model.dto.ReportResponse;
 import com.charly.market.report.repository.ReportRepository;
@@ -38,10 +39,13 @@ public class ReportController {
         ReportResponse reportResponse = reportService.findById(id);
         return ResponseEntity.ok(reportResponse);
     }
-    //삭제
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteReport(@PathVariable Long id){
-        reportService.delete(id);
-        return ResponseEntity.ok("삭제 성공");
+    //신고처리
+    @PatchMapping("/{id}/answer")
+    public ResponseEntity<String> answerReport(
+            @PathVariable Long id,
+            @RequestBody AnswerReportRequest request
+    ){
+        reportService.answerReport(id, request.adminId(), request.action());
+        return ResponseEntity.ok("신고 처리 완료 성공");
     }
 }

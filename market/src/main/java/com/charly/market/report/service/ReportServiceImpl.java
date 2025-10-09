@@ -6,6 +6,7 @@ import com.charly.market.report.model.entity.Report;
 import com.charly.market.report.repository.ReportRepository;
 import com.charly.market.auction_item.service.util.AuctionItemFinder;
 import com.charly.market.category.service.util.CategoryFinder;
+import com.charly.market.user.model.entity.User;
 import com.charly.market.user.service.util.UserFinder;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -75,11 +76,16 @@ public class ReportServiceImpl implements ReportService {
         );
     }
 
-
+    // 신고 처리 완료 상태로 만들기 "Y" -> "N"
+    @Transactional
     @Override
-    public void delete(Long id) {
-        Report report = reportRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Report not found with id: " + id));
-        report.deactivatedCategoryStatus();
+    public void answerReport(Long reportId, Long adminId, String answer) {
+        Report report = reportRepository.findById(reportId)
+                .orElseThrow(() -> new EntityNotFoundException("Report not found with id: " + reportId));
+
+        User admin = userFinder.getById(adminId);
+        report.answerReport(admin, answer);
     }
+
+
 }

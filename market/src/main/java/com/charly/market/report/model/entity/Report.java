@@ -31,6 +31,12 @@ public class Report extends BaseTimeEntity {
     @JoinColumn(name = "auction_id", nullable = false) // DB 컬럼명
     private AuctionItem auctionItem;
 
+    public void answerReport(User adminUser, String action){
+        this.adminUser = adminUser;
+        this.action = action;
+        this.status = "N";
+    }
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reporter_id", nullable = false) // DB 컬럼명
     private User reportUser;
@@ -38,9 +44,5 @@ public class Report extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "handler_id") // DB 컬럼명
     private User adminUser;
-
-    public void deactivatedCategoryStatus() {
-        this.status = "N";
-    }
 
 }
