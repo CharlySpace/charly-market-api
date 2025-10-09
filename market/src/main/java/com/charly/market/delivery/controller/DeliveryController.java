@@ -4,7 +4,8 @@ import com.charly.market.admin.log.model.dto.PageResponse;
 import com.charly.market.delivery.model.dto.CreateDeliveryRequest;
 import com.charly.market.delivery.model.dto.DeliveryResponse;
 import com.charly.market.delivery.model.dto.DeliverySearchRequest;
-import com.charly.market.delivery.model.dto.UpdateDeliveryNo;
+import com.charly.market.delivery.model.dto.UpdateDeliveryStatus;
+import com.charly.market.delivery.model.dto.UpdateDeliveryStatus;
 import com.charly.market.delivery.service.DeliveryService;
 
 import lombok.RequiredArgsConstructor;
@@ -58,11 +59,14 @@ public class DeliveryController {
     }
 
 
-    @PatchMapping("/{deliveryId}/deliveryNo")
-    public ResponseEntity<String> addDeliveryNo (@PathVariable Long deliveryId ,@RequestBody UpdateDeliveryNo udn){
-        deliveryService.updateDeliveryNo(deliveryId,udn);
+    @PatchMapping("/{deliveryId}")
+    public ResponseEntity<String> updateDelivery(
+            @PathVariable Long deliveryId,
+            @RequestBody UpdateDeliveryStatus request) {
 
-        return ResponseEntity.ok("운송장 번호 입력 성공");
+        deliveryService.updateDeliveryStatus(deliveryId, request);
+
+        return ResponseEntity.ok("배송 정보가 수정되었습니다.");
     }
 
 }

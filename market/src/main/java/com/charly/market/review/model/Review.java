@@ -27,7 +27,7 @@ public class Review extends BaseTimeEntity {
     private String content;
 
 
-    private String reviewStatus = "Y";
+    private String reviewStatus;
 
     // fk
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,6 +41,14 @@ public class Review extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "auction_id" , nullable = false)
     private AuctionItem auction; // 물품id
+
+
+
+    // DB 저장 전 디폴트 값 있는 것들 설정
+    @PrePersist
+    public void prePersist() {
+        if (reviewStatus == null) reviewStatus = "Y";
+    }
 
     public void changePostingStatus(){
         this.reviewStatus = "N";

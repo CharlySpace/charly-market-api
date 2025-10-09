@@ -5,10 +5,8 @@ import com.charly.market.delivery.model.Delivery;
 import com.charly.market.delivery.model.dto.CreateDeliveryRequest;
 import com.charly.market.delivery.model.dto.DeliveryResponse;
 import com.charly.market.delivery.model.dto.DeliverySearchRequest;
-import com.charly.market.delivery.model.dto.UpdateDeliveryNo;
+import com.charly.market.delivery.model.dto.UpdateDeliveryStatus;
 import com.charly.market.delivery.repository.DeliveryRepository;
-import com.charly.market.review.model.Review;
-import com.charly.market.review.model.dto.ReviewResponse;
 import com.charly.market.user.service.util.UserFinder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -106,10 +104,30 @@ public class DeliveryServiceImpl implements DeliveryService {
         deliveryRepository.deleteById(deliveryId);
     }
 
+
+    // 배송 상태 변경 : 생성, 배송지입력, 운송장등록, 배송완료확인, 반송 (NULL, E, I, S, R)
     @Transactional
     @Override
-    public void updateDeliveryNo(Long deliveryId, UpdateDeliveryNo udn) {
-        Optional<Delivery> deliveryItem = deliveryRepository.findById(deliveryId);
-        deliveryItem.ifPresent(r -> r.insertNo(udn.deliveryNo()));
+    public void updateDeliveryStatus(Long deliveryId, UpdateDeliveryStatus udn) {
+        Delivery delivery = deliveryRepository.findById(deliveryId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 배송 정보를 찾을 수 없습니다."));
+
+        if (udn.address() != null) {
+            delivery.registerDeliveryAddress(udn.address()); // 주소 변경 메서드
+        }
+
+        if (udn.deliveryNo() != null) {
+            delivery.insertNo(udn.deliveryNo()); // 운송장 번호 입력 메서드
+        }
+
+        if (udn.receiveCheck() != null){
+            delivery.receivedCheck(); // 배송완료 확인
+        }
+
+        if (udn.returnDelivery() != null){
+            delivery.returnCheck(); // 반송 처리
+        }
     }
+
+
 }
