@@ -4,12 +4,14 @@ import com.charly.market.auction_item.service.util.AuctionItemFinder;
 import com.charly.market.delivery.model.Delivery;
 import com.charly.market.delivery.model.dto.CreateDeliveryRequest;
 import com.charly.market.delivery.model.dto.DeliveryResponse;
+import com.charly.market.delivery.model.dto.DeliverySearchRequest;
 import com.charly.market.delivery.model.dto.UpdateDeliveryNo;
 import com.charly.market.delivery.repository.DeliveryRepository;
 import com.charly.market.review.model.Review;
 import com.charly.market.review.model.dto.ReviewResponse;
 import com.charly.market.user.service.util.UserFinder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,9 +33,9 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     public void create(CreateDeliveryRequest request) {
         Delivery d = Delivery.builder()
-                .sendId(userFinder.getById(request.sendId()))
-                .receiverId(userFinder.getById(request.receiverId()))
-                .auctionId(auctionItemFinder.getById(request.auctionId()))
+                .sender(userFinder.getById(request.sender()))
+                .receiver(userFinder.getById(request.receiver()))
+                .auction(auctionItemFinder.getById(request.auction()))
                 .build();
 
         deliveryRepository.save(d);
@@ -47,14 +49,15 @@ public class DeliveryServiceImpl implements DeliveryService {
         for (Delivery delivery : deliveryList) {
 
             DeliveryResponse findAll = new DeliveryResponse(
+                    delivery.getId(),
                     delivery.getAddress(),
                     delivery.getDeliveryNo(),
                     delivery.getDeliveryStatus(),
                     delivery.getRegisteredAt(),
                     delivery.getFinishedAt(),
-                    delivery.getSendId().getId(),
-                    delivery.getReceiverId().getId(),
-                    delivery.getAuctionId().getId()
+                    delivery.getSender().getId(),
+                    delivery.getReceiver().getId(),
+                    delivery.getAuction().getId()
             );
 
             deliveryResponses.add(findAll);
@@ -65,18 +68,35 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     @Override
+    public Page<DeliveryResponse> deliverySearch(DeliverySearchRequest request) {
+        return deliveryRepository.search(request).map(delivery -> new DeliveryResponse(
+                delivery.getId(),
+                delivery.getAddress(),
+                delivery.getDeliveryNo(),
+                delivery.getDeliveryStatus(),
+                delivery.getRegisteredAt(),
+                delivery.getFinishedAt(),
+                delivery.getSender().getId(),
+                delivery.getReceiver().getId(),
+                delivery.getAuction().getId()
+        ));
+    }
+
+
+    @Override
     public DeliveryResponse findByDeliveryId(Long deliveryId) {
         Optional<Delivery> deliveryItem = deliveryRepository.findById(deliveryId);
 
         return deliveryItem.map(item -> new DeliveryResponse(
+                item.getId(),
                 item.getAddress(),
                 item.getDeliveryNo(),
                 item.getDeliveryStatus(),
                 item.getRegisteredAt(),
                 item.getFinishedAt(),
-                item.getSendId().getId(),
-                item.getReceiverId().getId(),
-                item.getAuctionId().getId()
+                item.getSender().getId(),
+                item.getReceiver().getId(),
+                item.getAuction().getId()
         )).orElse(null);
     }
 

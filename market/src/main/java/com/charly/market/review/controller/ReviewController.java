@@ -1,10 +1,14 @@
 package com.charly.market.review.controller;
 
+import com.charly.market.admin.log.model.dto.PageResponse;
+import com.charly.market.admin.log.model.dto.UserLogResponse;
+import com.charly.market.admin.log.model.dto.UserLogSearchRequest;
 import com.charly.market.auction_item.model.dto.AuctionItemResponse;
 import com.charly.market.auction_item.model.dto.CreateAuctionItemRequest;
 import com.charly.market.auction_item.model.dto.UpdateAuctionItemContentRequest;
 import com.charly.market.review.model.dto.CreateReviewRequest;
 import com.charly.market.review.model.dto.ReviewResponse;
+import com.charly.market.review.model.dto.ReviewSearchRequest;
 import com.charly.market.review.model.dto.UpdateReviewStarRequest;
 import com.charly.market.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +16,8 @@ import org.hibernate.annotations.Comment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -32,12 +38,21 @@ public class ReviewController {
     }
 
 
+    // 그냥 페이징, 정렬없는 전체조회
     @GetMapping
     public ResponseEntity<List<ReviewResponse>> findReviewList(){
         List<ReviewResponse> reviewResponses = reviewService.reviewItemList();
 
         return ResponseEntity.ok(reviewResponses);
     }
+
+    // 페이징 및 검색 조건 추가
+    @GetMapping("/search")
+    public PageResponse<ReviewResponse> getUserLog(ReviewSearchRequest request) {
+        return PageResponse.of(reviewService.searchReview(request));
+    }
+
+
 
 
     @GetMapping("/{reviewId}")

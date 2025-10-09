@@ -2,8 +2,10 @@ package com.charly.market.auction_item.service;
 
 
 import com.charly.market.auction_item.model.dto.AuctionItemResponse;
+import com.charly.market.auction_item.model.dto.AuctionItemSearchRequest;
 import com.charly.market.auction_item.model.dto.CreateAuctionItemRequest;
 import com.charly.market.auction_item.model.dto.UpdateAuctionItemContentRequest;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -11,7 +13,8 @@ public interface AuctionItemService {
 
     void create(CreateAuctionItemRequest auctionItem);
     List<AuctionItemResponse> AuctionItemList();
-    AuctionItemResponse auctionItemSearch(Long auctionId);
-    void delete(Long auctionId);
-    void changeContentRequest(Long auctionId , UpdateAuctionItemContentRequest upa);
+    Page<AuctionItemResponse> auctionItemSearch(AuctionItemSearchRequest request);
+    AuctionItemResponse auctionItemSearch(Long auction);
+    void delete(Long auction);
+    void changeContentRequest(Long auction , UpdateAuctionItemContentRequest upa);
 }

@@ -1,7 +1,9 @@
 package com.charly.market.auction_item.service;
 
+import com.charly.market.admin.log.model.dto.PageResponse;
 import com.charly.market.auction_item.model.AuctionItem;
 import com.charly.market.auction_item.model.dto.AuctionItemResponse;
+import com.charly.market.auction_item.model.dto.AuctionItemSearchRequest;
 import com.charly.market.auction_item.model.dto.CreateAuctionItemRequest;
 import com.charly.market.auction_item.model.dto.UpdateAuctionItemContentRequest;
 import com.charly.market.auction_item.repository.AuctionItemRepository;
@@ -10,6 +12,7 @@ import com.charly.market.category.service.CategoryService;
 import com.charly.market.category.service.util.CategoryFinder;
 import com.charly.market.user.service.util.UserFinder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,8 +41,8 @@ public class AuctionItemServiceImpl implements AuctionItemService {
                 .startingPrice(request.startingPrice())
                 .bidUnit(request.bidUnit())
                 .address(request.address())
-                .userId(userFinder.getById(request.userId()))
-                .categoryId(categoryFinder.getById(request.categoryId()))
+                .seller(userFinder.getById(request.seller()))
+                .category(categoryFinder.getById(request.category()))
                 .postingStatus("Y")
                 .build();
 
@@ -54,13 +57,17 @@ public class AuctionItemServiceImpl implements AuctionItemService {
         for(AuctionItem auction : auctionItemEntity){
 
             AuctionItemResponse findAll = new AuctionItemResponse(
+                    auction.getId(),
                     auction.getTitle(),
                     auction.getContent(),
+                    auction.getCategory().getCategoryName(),
                     auction.getStartingPrice(),
+                    auction.getCurrentPrice(),
                     auction.getBidUnit(),
+                    auction.getBidStatus(),
                     auction.getAuctionStartTime(),
                     auction.getAuctionEndTime(),
-                    auction.getUserId().getId()
+                    auction.getSeller().getId()
             );
 
             findAuctionList.add(findAll);
@@ -70,18 +77,39 @@ public class AuctionItemServiceImpl implements AuctionItemService {
     }
 
     @Override
+    public Page<AuctionItemResponse> auctionItemSearch(AuctionItemSearchRequest request) {
+        return auctionItemRepository.search(request).map(auctionItem -> new AuctionItemResponse(
+                auctionItem.getId(),
+                auctionItem.getTitle(),
+                auctionItem.getContent(),
+                auctionItem.getCategory().getCategoryName(),
+                auctionItem.getStartingPrice(),
+                auctionItem.getCurrentPrice(),
+                auctionItem.getBidUnit(),
+                auctionItem.getBidStatus(),
+                auctionItem.getAuctionStartTime(),
+                auctionItem.getAuctionEndTime(),
+                auctionItem.getSeller().getId()
+        ));
+    }
+
+    @Override
     public AuctionItemResponse auctionItemSearch(Long id) {
 
         Optional<AuctionItem> auctionItem = auctionItemRepository.findById(id);
 
         return auctionItem.map(item -> new AuctionItemResponse(
+                item.getId(),
                 item.getTitle(),
                 item.getContent(),
+                item.getCategory().getCategoryName(),
                 item.getStartingPrice(),
+                item.getCurrentPrice(),
                 item.getBidUnit(),
+                item.getBidStatus(),
                 item.getAuctionStartTime(),
                 item.getAuctionEndTime(),
-                item.getUserId().getId()
+                item.getSeller().getId()
         )).orElse(null);
     }
 
@@ -97,14 +125,14 @@ public class AuctionItemServiceImpl implements AuctionItemService {
 
     @Override
     @Transactional
-    public void changeContentRequest(Long auctionId ,UpdateAuctionItemContentRequest upa) {
-        Optional<AuctionItem> auctionItem = auctionItemRepository.findById(auctionId);
+    public void changeContentRequest(Long auction ,UpdateAuctionItemContentRequest upa) {
+        Optional<AuctionItem> auctionItem = auctionItemRepository.findById(auction);
         auctionItem.ifPresent(auctionItem1 -> auctionItem1.changeContent(upa.newContent()));
 
-        //        AuctionItem auctionItem = auctionItemRepository.findById(auctionId).orElseThrow();
+        //        AuctionItem auctionItem = auctionItemRepository.findById(auction).orElseThrow();
 //        auctionItem.changeContent(upa.newContent());
 
-//        auctionItemRepository.updateContent(auctionId, upa.newContent());
+//        auctionItemRepository.updateContent(auction, upa.newContent());
 
 
     }

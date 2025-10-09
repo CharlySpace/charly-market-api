@@ -22,7 +22,7 @@ public class Review extends BaseTimeEntity {
     private Long id;
 
     @NotNull
-    private double reviewStar;
+    private Double reviewStar;
     @NotNull
     private String content;
 
@@ -40,7 +40,7 @@ public class Review extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "auction_id" , nullable = false)
-    private AuctionItem auctionId; // 물품id
+    private AuctionItem auction; // 물품id
 
     public void changePostingStatus(){
         this.reviewStatus = "N";

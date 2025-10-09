@@ -21,18 +21,18 @@ public class AuctionBid extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bid_id")
     private Long id; // bid_id
-    private long bidAmount; // 입찰가격
+    private Long bidAmount; // 입찰가격
     private String successStatus; // 낙찰여부
 
 
     //fk
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "auction_id", nullable = false)
-    private AuctionItem auctionId; // 물품번호
+    private AuctionItem auction; // 물품번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId; // 입찰자id
+    private User bidUser; // 입찰자id
 
     public void successBid(){ this.successStatus="Y";}
 }

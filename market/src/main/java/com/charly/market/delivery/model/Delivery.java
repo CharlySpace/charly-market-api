@@ -26,7 +26,7 @@ public class Delivery extends BaseTimeEntity {
     private Long id; // 배송id
 
     private String address; // 수령지
-    private long deliveryNo; // 운송장 번호
+    private Long deliveryNo; // 운송장 번호
     private String deliveryStatus; // 배송상태
     private LocalDateTime registeredAt; // 운송장번호 등록시간
     private LocalDateTime finishedAt; // 수령 확인 시간
@@ -35,15 +35,15 @@ public class Delivery extends BaseTimeEntity {
     // fk
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "send_user_id" , nullable = false)
-    private User sendId; // 보낸사람
+    private User sender; // 보낸사람
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_user_id", nullable = false)
-    private User receiverId; // 수령한사람
+    private User receiver; // 수령한사람
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "auction_id", nullable = false)
-    private AuctionItem auctionId; // 경매물품 id
+    private AuctionItem auction; // 경매물품 id
 
 
 

@@ -1,7 +1,7 @@
 package com.charly.market.inquiry.model.dto;
 
 public record InquiryResponse (
-        Long userId,
+        Long seller,
         String title,
         String content,
         char status,

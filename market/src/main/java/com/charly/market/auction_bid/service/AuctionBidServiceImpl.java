@@ -2,12 +2,14 @@ package com.charly.market.auction_bid.service;
 
 import com.charly.market.auction_bid.model.AuctionBid;
 import com.charly.market.auction_bid.model.dto.BidResponse;
+import com.charly.market.auction_bid.model.dto.BidSearchRequest;
 import com.charly.market.auction_bid.model.dto.CreateBidRequest;
 import com.charly.market.auction_bid.model.dto.SuccessfulBidRequest;
 import com.charly.market.auction_bid.repository.AuctionBidRepository;
 import com.charly.market.auction_item.service.util.AuctionItemFinder;
 import com.charly.market.user.service.util.UserFinder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AuctionBidServiceImpl implements AuctionBidService{
-    private final AuctionBidRepository repository;
+    private final AuctionBidRepository bidRepository;
     private final UserFinder userFinder;
     private final AuctionItemFinder auctionItemFinder;
 
@@ -28,16 +30,16 @@ public class AuctionBidServiceImpl implements AuctionBidService{
     public void create(CreateBidRequest request) {
         AuctionBid bid = AuctionBid.builder()
                 .bidAmount(request.bidAmount())
-                .userId(userFinder.getById(request.userId()))
-                .auctionId(auctionItemFinder.getById(request.auctionId()))
+                .bidUser(userFinder.getById(request.seller()))
+                .auction(auctionItemFinder.getById(request.auction()))
                 .build();
 
-        repository.save(bid);
+        bidRepository.save(bid);
     }
 
     @Override
     public List<BidResponse> bidList() {
-        List<AuctionBid> bidEntityList = repository.findAll();
+        List<AuctionBid> bidEntityList = bidRepository.findAll();
         List<BidResponse> bidResponses = new ArrayList<>();
 
         for (AuctionBid bid : bidEntityList) {
@@ -47,8 +49,8 @@ public class AuctionBidServiceImpl implements AuctionBidService{
                     bid.getBidAmount(),
                     bid.getCreatedAt(),
                     bid.getSuccessStatus(),
-                    bid.getAuctionId().getId(),
-                    bid.getUserId().getId()
+                    bid.getAuction().getId(),
+                    bid.getBidUser().getId()
             );
 
             bidResponses.add(findAll);
@@ -59,15 +61,28 @@ public class AuctionBidServiceImpl implements AuctionBidService{
     }
 
     @Override
+    public Page<BidResponse> searchBidList(BidSearchRequest request) {
+       return bidRepository.search(request).map(auctionBid -> new BidResponse(
+                auctionBid.getId(),
+                auctionBid.getBidAmount(),
+                auctionBid.getCreatedAt(),
+                auctionBid.getSuccessStatus(),
+                auctionBid.getAuction().getId(),
+                auctionBid.getBidUser().getId()
+        ));
+
+    }
+
+    @Override
     public BidResponse bidItemSearch(Long bidId) {
-        Optional<AuctionBid> bidItem = repository.findById(bidId);
+        Optional<AuctionBid> bidItem = bidRepository.findById(bidId);
         return bidItem.map(b -> new BidResponse(
                 b.getId(),
                 b.getBidAmount(),
                 b.getCreatedAt(),
                 b.getSuccessStatus(),
-                b.getAuctionId().getId(),
-                b.getUserId().getId()
+                b.getAuction().getId(),
+                b.getBidUser().getId()
         )).orElse(null);
     }
 
@@ -77,7 +92,7 @@ public class AuctionBidServiceImpl implements AuctionBidService{
     @Transactional
     @Override
     public void successfulBid(Long bidId, SuccessfulBidRequest sbr) {
-        Optional<AuctionBid> bidItem = repository.findById(bidId);
+        Optional<AuctionBid> bidItem = bidRepository.findById(bidId);
         bidItem.ifPresent(b -> b.successBid());
     }
 }

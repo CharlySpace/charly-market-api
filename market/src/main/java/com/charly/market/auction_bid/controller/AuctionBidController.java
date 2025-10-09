@@ -1,7 +1,9 @@
 package com.charly.market.auction_bid.controller;
 
+import com.charly.market.admin.log.model.dto.PageResponse;
 import com.charly.market.auction_bid.model.AuctionBid;
 import com.charly.market.auction_bid.model.dto.BidResponse;
+import com.charly.market.auction_bid.model.dto.BidSearchRequest;
 import com.charly.market.auction_bid.model.dto.CreateBidRequest;
 import com.charly.market.auction_bid.model.dto.SuccessfulBidRequest;
 import com.charly.market.auction_bid.service.AuctionBidService;
@@ -33,6 +35,11 @@ public class AuctionBidController {
     public ResponseEntity<List<BidResponse>> findBidList(){
         List<BidResponse> bidResponse = bidService.bidList();
         return ResponseEntity.ok(bidResponse);
+    }
+
+    @GetMapping("/search")
+    public PageResponse<BidResponse> findSearchList(BidSearchRequest request){
+        return PageResponse.of(bidService.searchBidList(request));
     }
 
 

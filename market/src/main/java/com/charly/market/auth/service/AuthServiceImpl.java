@@ -61,7 +61,7 @@ public class AuthServiceImpl implements AuthService {
     // 3) 유저 정보 로드 후 새 토큰 발급 (회전)
     User user = userRepository.findByUsername(username);
 
-//    TokenPair newPair = tokenProvider.createTokens(user.getUserId(), user.getUserEmail(), roles);
+//    TokenPair newPair = tokenProvider.createTokens(user.getseller(), user.getUserEmail(), roles);
     TokenPair newPair = tokenProvider.createTokens(user.getUsername(), String.valueOf(user.getRole()));
 
     // 4) 기존 refresh 폐기 → 새 refresh 저장(회전)

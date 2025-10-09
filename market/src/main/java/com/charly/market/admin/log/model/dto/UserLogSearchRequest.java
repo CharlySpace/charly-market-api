@@ -3,7 +3,7 @@ package com.charly.market.admin.log.model.dto;
 import org.springframework.data.domain.Sort;
 
 public record UserLogSearchRequest(
-    Long userId,
+    Long seller,
     String keyword,
     String columnName,
     Integer page,

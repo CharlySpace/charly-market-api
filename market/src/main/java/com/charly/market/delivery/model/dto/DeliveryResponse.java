@@ -6,14 +6,15 @@ import com.charly.market.user.model.entity.User;
 import java.time.LocalDateTime;
 
 public record DeliveryResponse(
+        Long id,
         String address,
-        long no,
+        Long no,
         String deliveryStatus,
         LocalDateTime registeredAt,
         LocalDateTime finishedAt,
-        Long sendId,
-        Long receiverId,
-        Long auctionId
+        Long sender,
+        Long receiver,
+        Long auction
 
 ) {
 }

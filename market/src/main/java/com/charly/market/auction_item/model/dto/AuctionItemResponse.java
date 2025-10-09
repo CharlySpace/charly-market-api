@@ -6,14 +6,19 @@ import java.time.LocalDateTime;
 
 
 public record AuctionItemResponse(
-         String title,
-         String content,
-         long startingPrice,
-         long bidUnit,
-         LocalDateTime auctionStartTime,
-         LocalDateTime auctionEndTime,
-         Long userId
-){
+        Long id,
+        String title,
+        String content,
+        String categoryName,
+        Long startingPrice,
+        Long CurrentPrice,
+        Long bidUnit,
+        String bidStatus,
+        LocalDateTime auctionStartTime,
+        LocalDateTime auctionEndTime,
+        Long seller
+
+) {
 
 
 }
