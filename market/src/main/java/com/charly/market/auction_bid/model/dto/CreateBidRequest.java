@@ -2,7 +2,7 @@ package com.charly.market.auction_bid.model.dto;
 
 public record CreateBidRequest(
         long bidAmount,
-        Long userId,
-        Long auctionId
+        Long seller,
+        Long auction
 ) {
 }

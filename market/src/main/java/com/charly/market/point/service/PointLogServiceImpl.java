@@ -28,7 +28,7 @@ public class PointLogServiceImpl implements PointLogService {
                 .explanation(request.explanation())
                 .pointAmount(request.pointAmount())
                 .bidId(0)
-                .userId(0)
+                .seller(0)
                 .build();
         pointLogRepository.save(pointLog);
     }

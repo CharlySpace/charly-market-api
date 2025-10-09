@@ -14,7 +14,7 @@ public interface AuctionItemService {
     void create(CreateAuctionItemRequest auctionItem);
     List<AuctionItemResponse> AuctionItemList();
     Page<AuctionItemResponse> auctionItemSearch(AuctionItemSearchRequest request);
-    AuctionItemResponse auctionItemSearch(Long auctionId);
-    void delete(Long auctionId);
-    void changeContentRequest(Long auctionId , UpdateAuctionItemContentRequest upa);
+    AuctionItemResponse auctionItemSearch(Long auction);
+    void delete(Long auction);
+    void changeContentRequest(Long auction , UpdateAuctionItemContentRequest upa);
 }

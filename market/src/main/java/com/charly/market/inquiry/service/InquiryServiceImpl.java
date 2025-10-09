@@ -31,7 +31,7 @@ public class InquiryServiceImpl implements InquiryService {
                 .content(request.content())
                 .status(request.status())
                 .answer(request.answer())
-                .user(userFinder.getById(request.userId()))
+                .user(userFinder.getById(request.seller()))
                 .build();
         inquiryRepository.save(inquiry);
     }

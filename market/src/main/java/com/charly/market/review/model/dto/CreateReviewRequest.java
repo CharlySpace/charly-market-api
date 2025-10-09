@@ -5,7 +5,7 @@ public record CreateReviewRequest(
         String content,
         Long reviewerId,
         Long revieweeId,
-        Long auctionId
+        Long auction
 
 ) {
 }

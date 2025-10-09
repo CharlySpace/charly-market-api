@@ -33,9 +33,9 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     public void create(CreateDeliveryRequest request) {
         Delivery d = Delivery.builder()
-                .sendId(userFinder.getById(request.sendId()))
-                .receiverId(userFinder.getById(request.receiverId()))
-                .auctionId(auctionItemFinder.getById(request.auctionId()))
+                .sender(userFinder.getById(request.sender()))
+                .receiver(userFinder.getById(request.receiver()))
+                .auction(auctionItemFinder.getById(request.auction()))
                 .build();
 
         deliveryRepository.save(d);
@@ -55,9 +55,9 @@ public class DeliveryServiceImpl implements DeliveryService {
                     delivery.getDeliveryStatus(),
                     delivery.getRegisteredAt(),
                     delivery.getFinishedAt(),
-                    delivery.getSendId().getId(),
-                    delivery.getReceiverId().getId(),
-                    delivery.getAuctionId().getId()
+                    delivery.getSender().getId(),
+                    delivery.getReceiver().getId(),
+                    delivery.getAuction().getId()
             );
 
             deliveryResponses.add(findAll);
@@ -76,9 +76,9 @@ public class DeliveryServiceImpl implements DeliveryService {
                 delivery.getDeliveryStatus(),
                 delivery.getRegisteredAt(),
                 delivery.getFinishedAt(),
-                delivery.getSendId().getId(),
-                delivery.getReceiverId().getId(),
-                delivery.getAuctionId().getId()
+                delivery.getSender().getId(),
+                delivery.getReceiver().getId(),
+                delivery.getAuction().getId()
         ));
     }
 
@@ -94,9 +94,9 @@ public class DeliveryServiceImpl implements DeliveryService {
                 item.getDeliveryStatus(),
                 item.getRegisteredAt(),
                 item.getFinishedAt(),
-                item.getSendId().getId(),
-                item.getReceiverId().getId(),
-                item.getAuctionId().getId()
+                item.getSender().getId(),
+                item.getReceiver().getId(),
+                item.getAuction().getId()
         )).orElse(null);
     }
 

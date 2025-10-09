@@ -45,7 +45,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .content(request.content())
                 .reviewerId(userFinder.getById(request.reviewerId()))
                 .revieweeId(userFinder.getById(request.revieweeId()))
-                .auctionId(auctionItemFinder.getById(request.auctionId()))
+                .auction(auctionItemFinder.getById(request.auction()))
                 .build();
 
         reviewRepository.save(review);
@@ -68,7 +68,7 @@ public class ReviewServiceImpl implements ReviewService {
                     review.getReviewStatus(),
                     review.getReviewerId().getId(),
                     review.getRevieweeId().getId(),
-                    review.getAuctionId().getId()
+                    review.getAuction().getId()
             );
 
             reviewResponses.add(findAll);
@@ -91,7 +91,7 @@ public class ReviewServiceImpl implements ReviewService {
                 review.getReviewStatus(),
                 review.getReviewerId().getId(),
                 review.getRevieweeId().getId(),
-                review.getAuctionId().getId()
+                review.getAuction().getId()
         ));
     }
 
@@ -108,7 +108,7 @@ public class ReviewServiceImpl implements ReviewService {
                 item.getReviewStatus(),
                 item.getReviewerId().getId(),
                 item.getRevieweeId().getId(),
-                item.getAuctionId().getId()
+                item.getAuction().getId()
         )).orElse(null);
     }
 

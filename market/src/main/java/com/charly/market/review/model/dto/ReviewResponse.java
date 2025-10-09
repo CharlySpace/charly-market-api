@@ -14,6 +14,6 @@ public record ReviewResponse(
         String reviewStatus,
         Long reviewerId,
         Long revieweeId,
-        Long auctionId
+        Long auction
 ) {
 }

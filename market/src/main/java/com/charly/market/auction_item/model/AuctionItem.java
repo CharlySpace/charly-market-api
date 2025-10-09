@@ -60,9 +60,9 @@ public class AuctionItem {
     // 외래키
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
-    private Category categoryId; // 카테고리id
+    private Category category; // 카테고리id
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId; // 판매자
+    private User seller; // 판매자
 }

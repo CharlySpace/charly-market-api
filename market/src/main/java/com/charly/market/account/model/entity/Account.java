@@ -28,7 +28,7 @@ public class Account {
     @Column
     private String bankOwner;
 
-    private Long userId;
+    private Long seller;
 
     public void changeAccountContent(AccountUpdateRequest request){
         this.bankName= request.bankName();

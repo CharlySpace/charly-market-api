@@ -22,13 +22,13 @@ public class DeliveryRepositoryCustomImpl extends BasePagedRepository<Delivery> 
         StringBuilder filter = new StringBuilder();
         Map<String, Object> params = new HashMap<>();
 
-        if (request.sendId() != null) {
-            filter.append(" AND d.sendId.id = :sendId");
-            params.put("sendId", request.sendId());
+        if (request.sender() != null) {
+            filter.append(" AND d.sender.id = :sender");
+            params.put("sender", request.sender());
         }
-        if (request.receiverId() != null) {
-            filter.append(" AND d.receiverId.id = :receiverId");
-            params.put("receiverId", request.receiverId());
+        if (request.receiver() != null) {
+            filter.append(" AND d.receiver.id = :receiver");
+            params.put("receiver", request.receiver());
         }
         if (request.deliveryStatus() != null) {
             filter.append(" AND d.deliveryStatus LIKE :deliveryStatus");

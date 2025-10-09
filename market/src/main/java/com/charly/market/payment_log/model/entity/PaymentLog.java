@@ -17,7 +17,7 @@ public class PaymentLog extends BaseTimeEntity {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    private Long auctionId;//참조키
+    private Long auction;//참조키
 
     private Long bidId;//참조 키
 

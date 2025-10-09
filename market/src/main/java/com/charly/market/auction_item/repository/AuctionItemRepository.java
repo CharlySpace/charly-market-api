@@ -12,7 +12,7 @@ public interface AuctionItemRepository extends JpaRepository<AuctionItem, Long>,
 
 //    @Modifying(clearAutomatically = true)
 //    @Transactional
-//    @Query("UPDATE AuctionItem a SET a.content = :content WHERE a.id = :auctionId")
-//    int updateContent(@Param("auctionId") Long auctionId,
+//    @Query("UPDATE AuctionItem a SET a.content = :content WHERE a.id = :auction")
+//    int updateContent(@Param("auction") Long auction,
 //                      @Param("content") String content);
 }

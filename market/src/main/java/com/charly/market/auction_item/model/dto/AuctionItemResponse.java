@@ -16,7 +16,7 @@ public record AuctionItemResponse(
         String bidStatus,
         LocalDateTime auctionStartTime,
         LocalDateTime auctionEndTime,
-        Long userId
+        Long seller
 
 ) {
 

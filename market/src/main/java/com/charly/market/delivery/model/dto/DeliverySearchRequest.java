@@ -8,8 +8,8 @@ public record DeliverySearchRequest (
         Sort.Direction direction,
         String sortBy,
         String deliveryStatus,
-        Long receiverId,
-        Long sendId
+        Long receiver,
+        Long sender
 ){
     public DeliverySearchRequest {
         if (page == null || page < 0) page = 0;

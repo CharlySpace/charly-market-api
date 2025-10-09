@@ -41,8 +41,8 @@ public class AuctionItemServiceImpl implements AuctionItemService {
                 .startingPrice(request.startingPrice())
                 .bidUnit(request.bidUnit())
                 .address(request.address())
-                .userId(userFinder.getById(request.userId()))
-                .categoryId(categoryFinder.getById(request.categoryId()))
+                .seller(userFinder.getById(request.seller()))
+                .category(categoryFinder.getById(request.category()))
                 .postingStatus("Y")
                 .build();
 
@@ -60,14 +60,14 @@ public class AuctionItemServiceImpl implements AuctionItemService {
                     auction.getId(),
                     auction.getTitle(),
                     auction.getContent(),
-                    auction.getCategoryId().getCategoryName(),
+                    auction.getCategory().getCategoryName(),
                     auction.getStartingPrice(),
                     auction.getCurrentPrice(),
                     auction.getBidUnit(),
                     auction.getBidStatus(),
                     auction.getAuctionStartTime(),
                     auction.getAuctionEndTime(),
-                    auction.getUserId().getId()
+                    auction.getSeller().getId()
             );
 
             findAuctionList.add(findAll);
@@ -82,14 +82,14 @@ public class AuctionItemServiceImpl implements AuctionItemService {
                 auctionItem.getId(),
                 auctionItem.getTitle(),
                 auctionItem.getContent(),
-                auctionItem.getCategoryId().getCategoryName(),
+                auctionItem.getCategory().getCategoryName(),
                 auctionItem.getStartingPrice(),
                 auctionItem.getCurrentPrice(),
                 auctionItem.getBidUnit(),
                 auctionItem.getBidStatus(),
                 auctionItem.getAuctionStartTime(),
                 auctionItem.getAuctionEndTime(),
-                auctionItem.getUserId().getId()
+                auctionItem.getSeller().getId()
         ));
     }
 
@@ -102,14 +102,14 @@ public class AuctionItemServiceImpl implements AuctionItemService {
                 item.getId(),
                 item.getTitle(),
                 item.getContent(),
-                item.getCategoryId().getCategoryName(),
+                item.getCategory().getCategoryName(),
                 item.getStartingPrice(),
                 item.getCurrentPrice(),
                 item.getBidUnit(),
                 item.getBidStatus(),
                 item.getAuctionStartTime(),
                 item.getAuctionEndTime(),
-                item.getUserId().getId()
+                item.getSeller().getId()
         )).orElse(null);
     }
 
@@ -125,14 +125,14 @@ public class AuctionItemServiceImpl implements AuctionItemService {
 
     @Override
     @Transactional
-    public void changeContentRequest(Long auctionId ,UpdateAuctionItemContentRequest upa) {
-        Optional<AuctionItem> auctionItem = auctionItemRepository.findById(auctionId);
+    public void changeContentRequest(Long auction ,UpdateAuctionItemContentRequest upa) {
+        Optional<AuctionItem> auctionItem = auctionItemRepository.findById(auction);
         auctionItem.ifPresent(auctionItem1 -> auctionItem1.changeContent(upa.newContent()));
 
-        //        AuctionItem auctionItem = auctionItemRepository.findById(auctionId).orElseThrow();
+        //        AuctionItem auctionItem = auctionItemRepository.findById(auction).orElseThrow();
 //        auctionItem.changeContent(upa.newContent());
 
-//        auctionItemRepository.updateContent(auctionId, upa.newContent());
+//        auctionItemRepository.updateContent(auction, upa.newContent());
 
 
     }

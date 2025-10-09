@@ -9,8 +9,8 @@ public record BidSearchRequest(
         String sortBy,
         Long bidAmount,
         String successStatus,
-        Long auctionId,
-        Long userId
+        Long auction,
+        Long seller
 ) {
 
     public BidSearchRequest {

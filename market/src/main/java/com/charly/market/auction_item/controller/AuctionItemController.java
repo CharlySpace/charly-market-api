@@ -43,26 +43,26 @@ public class AuctionItemController {
     }
 
     // id 값으로 1건 조회
-    @GetMapping("/{auctionId}")
-    public ResponseEntity<AuctionItemResponse> findByAuctionId(@PathVariable Long auctionId){
-        AuctionItemResponse auctionItemResponse = auctionItemService.auctionItemSearch(auctionId);
+    @GetMapping("/{auction}")
+    public ResponseEntity<AuctionItemResponse> findByauction(@PathVariable Long auction){
+        AuctionItemResponse auctionItemResponse = auctionItemService.auctionItemSearch(auction);
         return ResponseEntity.ok(auctionItemResponse);
     }
 
 
     // 물품게시물 비활성화
-    @DeleteMapping("/{auctionId}")
-    public ResponseEntity<String> delete(@PathVariable Long auctionId){
-        auctionItemService.delete(auctionId);
+    @DeleteMapping("/{auction}")
+    public ResponseEntity<String> delete(@PathVariable Long auction){
+        auctionItemService.delete(auction);
         return ResponseEntity.ok("비활성화 성공");
     }
 
 
 
 
-    @PatchMapping("/{auctionId}/content")
-    public ResponseEntity<String> changeContentRequest (@PathVariable Long auctionId ,@RequestBody UpdateAuctionItemContentRequest upa){
-        auctionItemService.changeContentRequest(auctionId,upa);
+    @PatchMapping("/{auction}/content")
+    public ResponseEntity<String> changeContentRequest (@PathVariable Long auction ,@RequestBody UpdateAuctionItemContentRequest upa){
+        auctionItemService.changeContentRequest(auction,upa);
 
         return ResponseEntity.ok("변경 성공");
     }

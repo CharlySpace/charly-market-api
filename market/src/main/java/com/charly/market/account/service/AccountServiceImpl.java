@@ -37,7 +37,7 @@ public class AccountServiceImpl implements AccountService {
                    account.getBankName(),
                    account.getAccountNumber(),
                    account.getBankOwner(),
-                   account.getUserId()
+                   account.getSeller()
            );
            accountResponseList.add(accountResponse);
         }

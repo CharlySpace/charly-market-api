@@ -23,13 +23,13 @@ public class AuctionBidRepositoryCustomImpl extends BasePagedRepository<AuctionB
         StringBuilder filter = new StringBuilder();
         Map<String, Object> params = new HashMap<>();
 
-        if (request.userId() != null) {
-            filter.append(" AND a.userId.id = :userId");
-            params.put("userId", request.userId());
+        if (request.seller() != null) {
+            filter.append(" AND a.bidUser.id = :bidUser");
+            params.put("bidUser", request.seller());
         }
-        if (request.auctionId() != null) {
-            filter.append(" AND a.auctionId.id = :auctionId");
-            params.put("auctionId", request.auctionId());
+        if (request.auction() != null) {
+            filter.append(" AND a.auction.id = :auction");
+            params.put("auction", request.auction());
         }
         if (request.bidAmount() != null) {
             filter.append(" AND a.bidAmount >= :bidAmount");

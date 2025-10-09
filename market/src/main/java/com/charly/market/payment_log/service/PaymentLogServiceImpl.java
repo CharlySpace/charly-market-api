@@ -24,7 +24,7 @@ public class PaymentLogServiceImpl implements PaymentLogService {
         List<PaymentLogResponse> paymentLogResponseList = new ArrayList<>();
         for(PaymentLog paymentLog : paymentLogEntity){
             PaymentLogResponse findAll=new PaymentLogResponse(
-                    paymentLog.getAuctionId(),
+                    paymentLog.getAuction(),
                     paymentLog.getBidId(),
                     paymentLog.getType(),
                     paymentLog.getPaymentAmount(),

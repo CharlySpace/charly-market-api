@@ -1,7 +1,7 @@
 package com.charly.market.payment_log.model.dto;
 
 public record PaymentLogResponse(
-        Long auctionId,
+        Long auction,
         Long bidId,
         String type,
         int paymentAmount,

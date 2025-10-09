@@ -30,8 +30,8 @@ public class AuctionBidServiceImpl implements AuctionBidService{
     public void create(CreateBidRequest request) {
         AuctionBid bid = AuctionBid.builder()
                 .bidAmount(request.bidAmount())
-                .userId(userFinder.getById(request.userId()))
-                .auctionId(auctionItemFinder.getById(request.auctionId()))
+                .bidUser(userFinder.getById(request.seller()))
+                .auction(auctionItemFinder.getById(request.auction()))
                 .build();
 
         bidRepository.save(bid);
@@ -49,8 +49,8 @@ public class AuctionBidServiceImpl implements AuctionBidService{
                     bid.getBidAmount(),
                     bid.getCreatedAt(),
                     bid.getSuccessStatus(),
-                    bid.getAuctionId().getId(),
-                    bid.getUserId().getId()
+                    bid.getAuction().getId(),
+                    bid.getBidUser().getId()
             );
 
             bidResponses.add(findAll);
@@ -67,8 +67,8 @@ public class AuctionBidServiceImpl implements AuctionBidService{
                 auctionBid.getBidAmount(),
                 auctionBid.getCreatedAt(),
                 auctionBid.getSuccessStatus(),
-                auctionBid.getAuctionId().getId(),
-                auctionBid.getUserId().getId()
+                auctionBid.getAuction().getId(),
+                auctionBid.getBidUser().getId()
         ));
 
     }
@@ -81,8 +81,8 @@ public class AuctionBidServiceImpl implements AuctionBidService{
                 b.getBidAmount(),
                 b.getCreatedAt(),
                 b.getSuccessStatus(),
-                b.getAuctionId().getId(),
-                b.getUserId().getId()
+                b.getAuction().getId(),
+                b.getBidUser().getId()
         )).orElse(null);
     }
 

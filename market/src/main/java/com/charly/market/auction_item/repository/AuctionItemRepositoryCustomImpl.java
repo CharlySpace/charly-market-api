@@ -23,12 +23,12 @@ public class AuctionItemRepositoryCustomImpl extends BasePagedRepository<Auction
         StringBuilder filter = new StringBuilder();
         Map<String, Object> params = new HashMap<>();
 
-        if (request.userId() != null) {
-            filter.append(" AND a.userId.id = :userId");
-            params.put("userId", request.userId());
+        if (request.seller() != null) {
+            filter.append(" AND a.seller.id = :seller");
+            params.put("seller", request.seller());
         }
         if (request.categoryName() != null) {
-            filter.append(" AND a.categoryId.categoryName Like :categoryName");
+            filter.append(" AND a.category.categoryName Like :categoryName");
             params.put("categoryName", "%" + request.categoryName() + "%");
         }
         if (request.currentPrice() != null) {

@@ -4,6 +4,6 @@ public record AccountResponse(
         String bankName,
         String accountNumber,
         String bankOwner,
-        Long userId
+        Long seller
 ) {
 }

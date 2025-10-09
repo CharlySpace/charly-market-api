@@ -6,8 +6,8 @@ public record CreateAuctionItemRequest(
         Long startingPrice,
         Long bidUnit,
         String address,// 판매자 주소
-        Long categoryId,
-        Long userId
+        Long category,
+        Long seller
 
 ) {
 }

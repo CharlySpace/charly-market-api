@@ -28,11 +28,11 @@ public class AuctionBid extends BaseTimeEntity {
     //fk
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "auction_id", nullable = false)
-    private AuctionItem auctionId; // 물품번호
+    private AuctionItem auction; // 물품번호
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId; // 입찰자id
+    private User bidUser; // 입찰자id
 
     public void successBid(){ this.successStatus="Y";}
 }

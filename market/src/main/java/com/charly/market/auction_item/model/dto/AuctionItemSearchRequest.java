@@ -15,7 +15,7 @@ public record AuctionItemSearchRequest(
         Integer currentPrice,
         String categoryName,
         String bidStatus,
-        Long userId
+        Long seller
 ) {
 
     public AuctionItemSearchRequest {

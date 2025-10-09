@@ -23,8 +23,8 @@ public class UserLogRepositoryImpl implements UserLogRepositoryCustom {
 
     StringBuilder filter = new StringBuilder();
 
-    if (request.userId() != null) {
-      filter.append(" AND u.user.id = :userId");
+    if (request.seller() != null) {
+      filter.append(" AND u.user.id = :seller");
     }
     if (request.keyword() != null && !request.keyword().isBlank()) {
       filter.append(" AND u.logContent LIKE :keyword");
@@ -36,7 +36,7 @@ public class UserLogRepositoryImpl implements UserLogRepositoryCustom {
     String jpql = baseQuery + filter + " ORDER BY u." + request.sortBy() + " " + request.direction();
     var query = em.createQuery(jpql, UserLog.class);
 
-    if (request.userId() != null) query.setParameter("userId", request.userId());
+    if (request.seller() != null) query.setParameter("seller", request.seller());
     if (request.keyword() != null && !request.keyword().isBlank())
       query.setParameter("keyword", "%" + request.keyword() + "%");
     if (request.columnName() != null && !request.columnName().isBlank())
@@ -47,7 +47,7 @@ public class UserLogRepositoryImpl implements UserLogRepositoryCustom {
     List<UserLog> results = query.getResultList();
 
     var countQ = em.createQuery(countQuery + filter, Long.class);
-    if (request.userId() != null) countQ.setParameter("userId", request.userId());
+    if (request.seller() != null) countQ.setParameter("seller", request.seller());
     if (request.keyword() != null && !request.keyword().isBlank())
       countQ.setParameter("keyword", "%" + request.keyword() + "%");
     if (request.columnName() != null && !request.columnName().isBlank())

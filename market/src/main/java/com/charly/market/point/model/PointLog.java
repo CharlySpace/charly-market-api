@@ -30,7 +30,7 @@ public class PointLog extends BaseTimeEntity {
 
     @Column
     private int bidId;
-    private int userId;
+    private int seller;
 
     @Column
     private int pointAmount ;//point_amount
