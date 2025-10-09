@@ -1,6 +1,6 @@
-package com.charly.market.Report.repository;
+package com.charly.market.report.repository;
 
-import com.charly.market.Report.model.entity.Report;
+import com.charly.market.report.model.entity.Report;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReportRepository extends JpaRepository<Report,Long> {

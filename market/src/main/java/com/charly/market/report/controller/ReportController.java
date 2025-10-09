@@ -1,9 +1,9 @@
-package com.charly.market.Report.controller;
+package com.charly.market.report.controller;
 
-import com.charly.market.Report.model.dto.CreateReportRequest;
-import com.charly.market.Report.model.dto.ReportResponse;
-import com.charly.market.Report.repository.ReportRepository;
-import com.charly.market.Report.service.ReportService;
+import com.charly.market.report.model.dto.CreateReportRequest;
+import com.charly.market.report.model.dto.ReportResponse;
+import com.charly.market.report.repository.ReportRepository;
+import com.charly.market.report.service.ReportService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

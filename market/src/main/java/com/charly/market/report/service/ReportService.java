@@ -1,7 +1,7 @@
-package com.charly.market.Report.service;
+package com.charly.market.report.service;
 
-import com.charly.market.Report.model.dto.CreateReportRequest;
-import com.charly.market.Report.model.dto.ReportResponse;
+import com.charly.market.report.model.dto.CreateReportRequest;
+import com.charly.market.report.model.dto.ReportResponse;
 
 import java.util.List;
 

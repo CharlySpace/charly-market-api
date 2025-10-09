@@ -1,9 +1,12 @@
-package com.charly.market.Report.service;
+package com.charly.market.report.service;
 
-import com.charly.market.Report.model.dto.CreateReportRequest;
-import com.charly.market.Report.model.dto.ReportResponse;
-import com.charly.market.Report.model.entity.Report;
-import com.charly.market.Report.repository.ReportRepository;
+import com.charly.market.report.model.dto.CreateReportRequest;
+import com.charly.market.report.model.dto.ReportResponse;
+import com.charly.market.report.model.entity.Report;
+import com.charly.market.report.repository.ReportRepository;
+import com.charly.market.auction_item.service.util.AuctionItemFinder;
+import com.charly.market.category.service.util.CategoryFinder;
+import com.charly.market.user.service.util.UserFinder;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,13 +22,18 @@ import java.util.List;
 public class ReportServiceImpl implements ReportService {
 
     private final ReportRepository reportRepository;
+    private final UserFinder userFinder;
+    private final AuctionItemFinder auctionItemFinder;
+    private final CategoryFinder categoryFinder;
 
     @Override
     public void createReport(CreateReportRequest request) {
         Report report = Report.builder()
+                .category(categoryFinder.getById(request.categoryId()))
+                .auctionItem(auctionItemFinder.getById(request.auctionId()))
                 .content(request.content())
                 .status(request.status())
-                .action(request.action())
+                .reportUser(userFinder.getById(request.reporterId()))
                 .build();
 
         reportRepository.save(report);
@@ -38,9 +46,13 @@ public class ReportServiceImpl implements ReportService {
         List<ReportResponse> reportResponseList = new ArrayList<>();
         for (Report report : reports) {
             ReportResponse reportResponse = new ReportResponse(
+                    report.getCategory().getId(),
+                    report.getAuctionItem().getId(),
                     report.getContent(),
                     report.getStatus(),
-                    report.getAction()
+                    report.getReportUser().getId(),
+                    report.getAction(),
+                    report.getAdminUser() != null ? report.getAdminUser().getId() : null
             );
             reportResponseList.add(reportResponse);
         }
@@ -49,13 +61,20 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public ReportResponse findById(Long id) {
-        return reportRepository.findById(id)
-                .map(report -> new ReportResponse(
-                        report.getContent(),
-                        report.getStatus(),
-                        report.getAction()))
+        Report report = reportRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Report not found with id: " + id));
+
+        return new ReportResponse(
+                report.getCategory().getId(),
+                report.getAuctionItem().getId(),
+                report.getContent(),
+                report.getStatus(),
+                report.getReportUser().getId(),
+                report.getAction(),
+                report.getAdminUser() != null ? report.getAdminUser().getId() : null
+        );
     }
+
 
     @Override
     public void delete(Long id) {
