@@ -1,23 +1,17 @@
 package com.charly.market.review.controller;
 
 import com.charly.market.admin.log.model.dto.PageResponse;
-import com.charly.market.admin.log.model.dto.UserLogResponse;
-import com.charly.market.admin.log.model.dto.UserLogSearchRequest;
-import com.charly.market.auction_item.model.dto.AuctionItemResponse;
-import com.charly.market.auction_item.model.dto.CreateAuctionItemRequest;
-import com.charly.market.auction_item.model.dto.UpdateAuctionItemContentRequest;
 import com.charly.market.review.model.dto.CreateReviewRequest;
 import com.charly.market.review.model.dto.ReviewResponse;
 import com.charly.market.review.model.dto.ReviewSearchRequest;
-import com.charly.market.review.model.dto.UpdateReviewStarRequest;
+import com.charly.market.review.model.dto.UpdateReviewRequest;
 import com.charly.market.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Comment;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.*;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
 
 import java.util.List;
 
@@ -69,11 +63,12 @@ public class ReviewController {
     }
 
 
-    @PatchMapping("/{reviewId}/reviewStar")
-    public ResponseEntity<String> changeReviewStarRequest (@PathVariable Long reviewId ,@RequestBody UpdateReviewStarRequest urs){
-        reviewService.changeReviewStar(reviewId,urs);
-
-        return ResponseEntity.ok("변경 성공");
+    @PatchMapping("/{reviewId}")
+    public ResponseEntity<String> updateReview(
+            @PathVariable Long reviewId,
+            @RequestBody UpdateReviewRequest urs) {
+        reviewService.changeReview(reviewId, urs);
+        return ResponseEntity.ok("리뷰 수정 완료");
     }
 
 }

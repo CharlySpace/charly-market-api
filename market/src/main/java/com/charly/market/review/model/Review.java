@@ -54,8 +54,14 @@ public class Review extends BaseTimeEntity {
         this.reviewStatus = "N";
     }
 
-    public void changeReviewStar(double reviewStar){
-        this.reviewStar = reviewStar;
+
+    public void updateReview(Double reviewStar, String content) {
+        if (reviewStar != null) {
+            this.reviewStar = reviewStar;
+        }
+        if (content != null && !content.isBlank()) {
+            this.content = content;
+        }
     }
 
 
