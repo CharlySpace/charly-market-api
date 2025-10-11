@@ -1,31 +1,25 @@
 package com.charly.market.review.service;
-
-import com.charly.market.auction_item.model.AuctionItem;
-import com.charly.market.auction_item.model.dto.AuctionItemResponse;
 import com.charly.market.auction_item.service.util.AuctionItemFinder;
-import com.charly.market.notice.model.dto.ChangeContentRequest;
-import com.charly.market.notice.model.entity.Notice;
+
 import com.charly.market.review.model.Review;
 import com.charly.market.review.model.dto.CreateReviewRequest;
 import com.charly.market.review.model.dto.ReviewResponse;
 import com.charly.market.review.model.dto.ReviewSearchRequest;
-import com.charly.market.review.model.dto.UpdateReviewStarRequest;
+import com.charly.market.review.model.dto.UpdateReviewRequest;
 import com.charly.market.review.repository.ReviewRepository;
-import com.charly.market.user.model.entity.User;
-import com.charly.market.user.repository.UserRepository;
 import com.charly.market.user.service.util.UserFinder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 
 @Service
 @RequiredArgsConstructor
@@ -124,18 +118,9 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Transactional
     @Override
-    public void changeReviewStar(Long reviewId, UpdateReviewStarRequest urs) {
-        Optional<Review> reviewItem = reviewRepository.findById(reviewId);
-        reviewItem.ifPresent(r -> r.changeReviewStar(urs.reviewStar()));
-
+    public void changeReview(Long reviewId, UpdateReviewRequest urs) {
+        reviewRepository.findById(reviewId)
+                .ifPresent(r -> r.updateReview(urs.reviewStar(), urs.content()));
     }
 
-//    @Transactional
-//    @Override
-//    public void changeReviewStar(UpdateReviewStarRequest req) {
-//        Long id = 1L;
-//        Review review = reviewRepository.findById();
-//
-//        review.changeReviewStar(req.newReviewStar());
-//    }
 }

@@ -47,11 +47,31 @@ public class Delivery extends BaseTimeEntity {
 
 
 
-    public void insertNo (long deliveryNo){
-        this.deliveryNo = deliveryNo;
+
+
+
+    public void registerDeliveryAddress(String address){
+        this.address = address;
         this.deliveryStatus = "E";
+    }
+
+    public void insertNo (Long deliveryNo){
+        this.deliveryNo = deliveryNo;
+        this.registeredAt = LocalDateTime.now();
+        this.deliveryStatus = "I";
 
     }
+
+    public void receivedCheck(){
+        this.finishedAt = LocalDateTime.now();
+        this.deliveryStatus = "S";
+    }
+
+    public void returnCheck(){
+        this.deliveryStatus = "R";
+    }
+
+
 
 
 }
