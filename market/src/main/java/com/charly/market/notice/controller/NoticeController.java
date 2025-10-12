@@ -1,8 +1,10 @@
 package com.charly.market.notice.controller;
 
+import com.charly.market.admin.log.model.dto.PageResponse;
 import com.charly.market.notice.model.dto.ChangeContentRequest;
 import com.charly.market.notice.model.dto.CreateNoticeRequest;
 import com.charly.market.notice.model.dto.NoticeResponse;
+import com.charly.market.notice.model.dto.NoticeSearchRequest;
 import com.charly.market.notice.service.NoticeService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -51,5 +53,11 @@ public class NoticeController {
     public ResponseEntity<String> changeContent(@RequestBody ChangeContentRequest req){
         noticeService.changeContent(req);
         return ResponseEntity.ok("변경 성공");
+    }
+
+    //페이징
+    @GetMapping("/search")
+    public PageResponse<NoticeResponse> noticeSearchList(NoticeSearchRequest request) {
+        return PageResponse.of(noticeService.noticeSearch(request));
     }
 }
