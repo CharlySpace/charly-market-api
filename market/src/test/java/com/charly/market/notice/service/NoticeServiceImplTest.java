@@ -17,7 +17,7 @@ class NoticeServiceImplTest {
 
     @Test
     public void createNotice() {
-        for (long i = 5; i < 10; i++) {
+        for (long i = 1; i < 6; i++) {
             //given
             CreateNoticeRequest request = new CreateNoticeRequest("제목" + i, "내용" + i, "Y", i);
 
