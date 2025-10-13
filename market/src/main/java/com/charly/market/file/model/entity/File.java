@@ -20,7 +20,7 @@ public class File {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String path;
     private String fileName;
     private String type;
