@@ -1,8 +1,10 @@
 /**/
+use charly_market;
+
 DELIMITER //
 
 CREATE TRIGGER trg_user_update_log
-    AFTER UPDATE ON user
+    AFTER UPDATE ON users
     FOR EACH ROW
 BEGIN
     -- 닉네임 변경
