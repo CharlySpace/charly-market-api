@@ -3,10 +3,12 @@ package com.charly.market.payment_log.service;
 import com.charly.market.account.service.utill.AccountFinder;
 import com.charly.market.payment_log.model.dto.CreatePaymentLogRequest;
 import com.charly.market.payment_log.model.dto.PaymentLogResponse;
+import com.charly.market.payment_log.model.dto.PaymentLogSearchRequest;
 import com.charly.market.payment_log.model.entity.PaymentLog;
 import com.charly.market.payment_log.repository.PaymentLogRepository;
 import com.charly.market.user.service.util.UserFinder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,5 +56,20 @@ public class PaymentLogServiceImpl implements PaymentLogService {
                 .build();
         paymentLogRepository.save(paymentLog);
 
+    }
+
+    @Override
+    public Page<PaymentLogResponse> searchPaymentLogs(PaymentLogSearchRequest request) {
+        return paymentLogRepository.search(request)
+                .map(paymentLog -> new PaymentLogResponse(
+                        paymentLog.getType(),
+                        paymentLog.getAccount().getId(),
+                        paymentLog.getUser().getId(),
+                        paymentLog.getPaymentAmount(),
+                        paymentLog.getConversionAmount(),
+                        paymentLog.getGradeName(),
+                        paymentLog.getPointAmount()
+                        )
+                );
     }
 }

@@ -1,7 +1,9 @@
 package com.charly.market.payment_log.controller;
 
+import com.charly.market.admin.log.model.dto.PageResponse;
 import com.charly.market.payment_log.model.dto.CreatePaymentLogRequest;
 import com.charly.market.payment_log.model.dto.PaymentLogResponse;
+import com.charly.market.payment_log.model.dto.PaymentLogSearchRequest;
 import com.charly.market.payment_log.repository.PaymentLogRepository;
 import com.charly.market.payment_log.service.PaymentLogService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,10 @@ public class PaymentLogController {
     public ResponseEntity<List<PaymentLogResponse>> findAllPaymentLogs() {
         List<PaymentLogResponse>paymentLogResponseList=paymentLogService.getPaymentLogs();
     return ResponseEntity.ok(paymentLogResponseList);
+    }
+    @GetMapping("/search")
+    public PageResponse<PaymentLogResponse> search(PaymentLogSearchRequest request){
+        return PageResponse.of(paymentLogService.searchPaymentLogs(request));
     }
 
     @PostMapping

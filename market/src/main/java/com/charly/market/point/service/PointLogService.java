@@ -1,15 +1,20 @@
 package com.charly.market.point.service;
 
-import java.util.List;
-
 import com.charly.market.point.model.dto.ChangeExplanationRequest;
 import com.charly.market.point.model.dto.CreatePointLogRequest;
 import com.charly.market.point.model.dto.PointLogResponse;
+import com.charly.market.point.model.dto.PointLogSearchRequest;
+import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface PointLogService {
-    void Serv(CreatePointLogRequest request);
-    List<PointLogResponse> findAll();
-    PointLogResponse findById(Long id);
-   // void delete(Long id);
-    void changExplanation(ChangeExplanationRequest request);
+
+  void create(CreatePointLogRequest request);
+
+  List<PointLogResponse> findAll();
+
+  // void delete(Long id);
+  Page<PointLogResponse> searchPointLog(PointLogSearchRequest request);
+
+  void changExplanation(ChangeExplanationRequest request);
 }
