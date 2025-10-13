@@ -18,16 +18,23 @@ class GradeServiceImplTest {
 
   @Test
   public void createGrade() {
-    for (int i = 5; i < 10; i++) {
+    for (int i = 1; i < 6; i++) {
       // given
-      CreateGradeRequest request = new CreateGradeRequest("name" + i, i, i);
+      String name;
+      if (i == 1) {
+        name = "B";
+      } else {
+        name = "B" + i;
+      }
+
+      CreateGradeRequest request = new CreateGradeRequest(name, i, i);
 
       // when
       gradeService.createGrade(request);
-
-      // then
-      List<GradeResponse> grade = gradeService.findAll();
-      System.out.println(grade);
     }
+
+    // then
+    List<GradeResponse> grade = gradeService.findAll();
+    System.out.println(grade);
   }
 }
