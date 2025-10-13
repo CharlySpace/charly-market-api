@@ -4,7 +4,7 @@ import com.charly.market.admin.log.model.dto.PageResponse;
 import com.charly.market.auction_item.model.dto.AuctionItemResponse;
 import com.charly.market.auction_item.model.dto.AuctionItemSearchRequest;
 import com.charly.market.auction_item.model.dto.CreateAuctionItemRequest;
-import com.charly.market.auction_item.model.dto.UpdateAuctionItemContentRequest;
+import com.charly.market.auction_item.model.dto.UpdateAuctionItemRequest;
 import com.charly.market.auction_item.service.AuctionItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -60,11 +60,22 @@ public class AuctionItemController {
 
 
 
-    @PatchMapping("/{auction}/content")
-    public ResponseEntity<String> changeContentRequest (@PathVariable Long auction ,@RequestBody UpdateAuctionItemContentRequest upa){
-        auctionItemService.changeContentRequest(auction,upa);
+    @PatchMapping("/{auction}/update")
+    public ResponseEntity<String> changeUpdateAuctionItem (@PathVariable Long auction ,@RequestBody UpdateAuctionItemRequest request){
+        auctionItemService.updateAuctionItem(auction,request);
 
         return ResponseEntity.ok("변경 성공");
+    }
+
+
+
+    @PatchMapping("/{auctionId}/status")
+    public ResponseEntity<String> updateBidStatus(
+            @PathVariable Long auctionId,
+            @RequestParam String bidStatus  // B, F, Y, N
+    ) {
+        auctionItemService.updateBidStatus(auctionId, bidStatus);
+        return ResponseEntity.ok("입찰 상태 변경성공");
     }
 
 

@@ -3,7 +3,6 @@ package com.charly.market.report.controller;
 import com.charly.market.report.model.dto.AnswerReportRequest;
 import com.charly.market.report.model.dto.CreateReportRequest;
 import com.charly.market.report.model.dto.ReportResponse;
-import com.charly.market.report.repository.ReportRepository;
 import com.charly.market.report.service.ReportService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,7 @@ import java.util.List;
 @RequestMapping("/api/v1/report")
 public class ReportController {
     private final ReportService reportService;
-    private final ReportRepository reportRepository;
+
 
     //등록
     @PostMapping

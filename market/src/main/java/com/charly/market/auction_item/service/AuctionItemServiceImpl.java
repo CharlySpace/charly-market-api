@@ -1,22 +1,19 @@
 package com.charly.market.auction_item.service;
 
-import com.charly.market.admin.log.model.dto.PageResponse;
 import com.charly.market.auction_item.model.AuctionItem;
 import com.charly.market.auction_item.model.dto.AuctionItemResponse;
 import com.charly.market.auction_item.model.dto.AuctionItemSearchRequest;
 import com.charly.market.auction_item.model.dto.CreateAuctionItemRequest;
-import com.charly.market.auction_item.model.dto.UpdateAuctionItemContentRequest;
+import com.charly.market.auction_item.model.dto.UpdateAuctionItemRequest;
 import com.charly.market.auction_item.repository.AuctionItemRepository;
-import com.charly.market.category.model.entity.Category;
-import com.charly.market.category.service.CategoryService;
 import com.charly.market.category.service.util.CategoryFinder;
 import com.charly.market.user.service.util.UserFinder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -123,18 +120,40 @@ public class AuctionItemServiceImpl implements AuctionItemService {
 
     }
 
+
+    @Transactional
+    @Override
+    public void updateAuctionItem(Long auctionId, UpdateAuctionItemRequest request) {
+        auctionItemRepository.findById(auctionId)
+                .ifPresent(auctionItem -> {
+
+                    // 경매 시작 전에만 변경 가능하게
+                    if (auctionItem.getAuctionStartTime() != null &&
+                            LocalDateTime.now().isAfter(auctionItem.getAuctionStartTime())) {
+                        throw new IllegalStateException("수정사항은 경매 시작 전만 가능합니다");
+                    }
+
+
+                    if (request.title() != null) auctionItem.changeTitle(request.title());
+                    if (request.content() != null) auctionItem.changeContent(request.content());
+                    if (request.startingPrice() != null) auctionItem.changeStartingPrice(request.startingPrice());
+                    if (request.bidUnit() != null) auctionItem.changeBidUnit(request.bidUnit());
+                    if (request.address() != null) auctionItem.changeAddress(request.address());
+                    if (request.categoryId() != null) auctionItem.changeCategory(categoryFinder.getById(request.categoryId()));
+
+
+
+                    auctionItem.updateAuctionTimes(LocalDateTime.now());
+                });
+    }
+
+
+
     @Override
     @Transactional
-    public void changeContentRequest(Long auction ,UpdateAuctionItemContentRequest upa) {
-        Optional<AuctionItem> auctionItem = auctionItemRepository.findById(auction);
-        auctionItem.ifPresent(auctionItem1 -> auctionItem1.changeContent(upa.newContent()));
-
-        //        AuctionItem auctionItem = auctionItemRepository.findById(auction).orElseThrow();
-//        auctionItem.changeContent(upa.newContent());
-
-//        auctionItemRepository.updateContent(auction, upa.newContent());
-
-
+    public void updateBidStatus(Long auctionId, String statusCode) {
+        Optional<AuctionItem> auctionItemOptional = auctionItemRepository.findById(auctionId);
+        auctionItemOptional.ifPresent(auctionItem -> auctionItem.changeBidStatus(statusCode));
     }
 
 
