@@ -5,5 +5,6 @@ import com.charly.market.payment_log.model.entity.PaymentLog;
 import org.springframework.data.domain.Page;
 
 public interface PaymentLogRepositoryCustom {
-    Page<PaymentLog> search(PaymentLogSearchRequest request);
+
+  Page<PaymentLog> search(PaymentLogSearchRequest request);
 }
