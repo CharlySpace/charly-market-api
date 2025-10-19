@@ -5,5 +5,6 @@ import com.charly.market.point.model.dto.PointLogSearchRequest;
 import org.springframework.data.domain.Page;
 
 public interface PointLogRepositoryCustom {
-    Page<PointLog> search(PointLogSearchRequest request);
+
+  Page<PointLog> search(PointLogSearchRequest request);
 }
