@@ -2,6 +2,7 @@ package com.charly.market.report.service;
 
 import com.charly.market.report.model.dto.CreateReportRequest;
 import com.charly.market.report.model.dto.ReportResponse;
+import com.charly.market.report.model.dto.ReportSearchRequest;
 import com.charly.market.report.model.entity.Report;
 import com.charly.market.report.repository.ReportRepository;
 import com.charly.market.auction_item.service.util.AuctionItemFinder;
@@ -10,6 +11,7 @@ import com.charly.market.user.model.entity.User;
 import com.charly.market.user.service.util.UserFinder;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,6 +87,24 @@ public class ReportServiceImpl implements ReportService {
 
         User admin = userFinder.getById(adminId);
         report.answerReport(admin, answer);
+    }
+
+
+    // 페이징
+    @Override
+    public Page<ReportResponse> reportSearch(ReportSearchRequest request) {
+        return reportRepository.search(request)
+                .map(report -> new ReportResponse(
+                        report.getCategory().getId(),
+                        report.getAuctionItem().getId(),
+                        report.getContent(),
+                        report.getStatus(),
+                        report.getReportUser().getId(),
+                        report.getAction(),
+                        report.getAdminUser().getId()
+
+
+                ));
     }
 
 
