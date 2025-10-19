@@ -3,9 +3,11 @@ package com.charly.market.alarm_template.controller;
 import com.charly.market.alarm_template.model.dto.AlarmTemplateChangeContentRequest;
 import com.charly.market.alarm_template.model.dto.AlarmTemplateRequest;
 import com.charly.market.alarm_template.model.dto.AlarmTemplateResponse;
+import com.charly.market.alarm_template.model.dto.CreateAlarmTemplateRequest;
 import com.charly.market.alarm_template.model.entity.AlarmTemplate;
 import com.charly.market.alarm_template.service.AlarmTemplateService;
 import com.charly.market.alarmbox.model.dto.ChangeStatusRequest;
+import com.charly.market.alarmbox.model.dto.CreateAlarmBoxRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +22,7 @@ public class AlarmTemplateController {
 
     // 생성
     @PostMapping()
-    public ResponseEntity<String> createAlarmTemplate(@RequestBody AlarmTemplateRequest req) {
+    public ResponseEntity<String> createAlarmTemplate(@RequestBody CreateAlarmTemplateRequest req) {
         System.out.println(req.toString());
         alarmTemplateService.createAlarmTemplate(req);
         return ResponseEntity.ok("알림 템플릿 생성 성공");
