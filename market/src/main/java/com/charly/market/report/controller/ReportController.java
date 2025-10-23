@@ -1,8 +1,10 @@
 package com.charly.market.report.controller;
 
+import com.charly.market.admin.log.model.dto.PageResponse;
 import com.charly.market.report.model.dto.AnswerReportRequest;
 import com.charly.market.report.model.dto.CreateReportRequest;
 import com.charly.market.report.model.dto.ReportResponse;
+import com.charly.market.report.model.dto.ReportSearchRequest;
 import com.charly.market.report.service.ReportService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +22,7 @@ public class ReportController {
 
     //등록
     @PostMapping
-    public ResponseEntity<String> createReport(@RequestBody CreateReportRequest request){
+    public ResponseEntity<String> createReport(@RequestBody CreateReportRequest request) {
         System.out.println(request.toString());
         reportService.createReport(request);
         return ResponseEntity.ok("신고");
@@ -32,19 +34,30 @@ public class ReportController {
         List<ReportResponse> reportListResponses = reportService.findAll();
         return ResponseEntity.ok(reportListResponses);
     }
+
     //검색
     @GetMapping("/{id}")
-    public ResponseEntity<ReportResponse>  findCategoryById(@PathVariable @NotNull Long id){
+    public ResponseEntity<ReportResponse> findCategoryById(@PathVariable @NotNull Long id) {
         ReportResponse reportResponse = reportService.findById(id);
         return ResponseEntity.ok(reportResponse);
     }
+
     //신고처리
     @PatchMapping("/{id}/answer")
     public ResponseEntity<String> answerReport(
             @PathVariable Long id,
             @RequestBody AnswerReportRequest request
-    ){
+    ) {
         reportService.answerReport(id, request.adminId(), request.action());
         return ResponseEntity.ok("신고 처리 완료 성공");
+
     }
+    // 페이징
+    @GetMapping("/search")
+    public PageResponse<ReportResponse> reportSearchList(ReportSearchRequest request) {
+        return PageResponse.of(reportService.reportSearch(request));
+    }
+
+
 }
+
