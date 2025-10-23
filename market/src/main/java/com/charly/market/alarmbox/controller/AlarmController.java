@@ -1,10 +1,13 @@
 package com.charly.market.alarmbox.controller;
 
 
+import com.charly.market.admin.log.model.dto.PageResponse;
+import com.charly.market.alarmbox.model.dto.CreateAlarmBoxRequest;
 import com.charly.market.alarmbox.model.dto.AlarmBoxResponse;
-import com.charly.market.alarmbox.model.dto.AlarmBoxRequest;
 import com.charly.market.alarmbox.model.dto.ChangeStatusRequest;
+import com.charly.market.alarmbox.model.dto.AlarmBoxSearchRequest;
 import com.charly.market.alarmbox.service.AlarmBoxService;
+import com.charly.market.report.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +19,7 @@ import java.util.List;
 @RequestMapping("/api/v1/alarmbox")
 public class AlarmController {
     private final AlarmBoxService alarmBoxService;
+    private final ReportService reportService;
 
     // 조회
     @GetMapping()
@@ -32,9 +36,9 @@ public class AlarmController {
         return ResponseEntity.ok(alarmBoxResponse);
     }
 
-    // 생성
+    // 등록
     @PostMapping()
-    public ResponseEntity<String> createAlarmBox(@RequestBody AlarmBoxRequest req) {
+    public ResponseEntity<String> createAlarmBox(@RequestBody CreateAlarmBoxRequest req) {
         System.out.println(req.toString());
         alarmBoxService.createAlarmBox(req);
 
@@ -54,5 +58,11 @@ public class AlarmController {
         alarmBoxService.changeStatus(req);
         return ResponseEntity.ok("변경 성공");
 
+    }
+
+    // 페이징
+    @GetMapping("/search")
+    public PageResponse<AlarmBoxResponse> AlarmBoxSearchList(AlarmBoxSearchRequest request) {
+        return PageResponse.of(alarmBoxService.alarmBoxSearch(request));
     }
 }
