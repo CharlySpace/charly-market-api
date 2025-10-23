@@ -39,4 +39,4 @@ out/
 ### Settings ###
 **/src/main/resources/application.yml
 logs/
-**/src/main/resources/.env
+.env
