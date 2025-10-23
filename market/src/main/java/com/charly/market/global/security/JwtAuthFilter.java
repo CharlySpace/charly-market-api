@@ -21,7 +21,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
   private final AntPathMatcher matcher = new AntPathMatcher();
 
   private static final String[] PUBLIC = {
-      "/api/v1/auth/**", "/actuator/**" , "/mail/**"
+      "/api/v1/auth/**", "/actuator/**" , "/email/**"
   };
 
   public JwtAuthFilter(JwtTokenProvider tokenProvider, AuthRedisRepository authRedis) {
