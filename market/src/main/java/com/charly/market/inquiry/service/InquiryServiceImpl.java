@@ -2,12 +2,14 @@ package com.charly.market.inquiry.service;
 
 import com.charly.market.inquiry.model.dto.CreateInquiryRequest;
 import com.charly.market.inquiry.model.dto.InquiryResponse;
+import com.charly.market.inquiry.model.dto.InquirySearchRequest;
 import com.charly.market.inquiry.model.entity.Inquiry;
 import com.charly.market.inquiry.repository.InquiryRepository;
 import com.charly.market.user.model.entity.User;
 import com.charly.market.user.service.util.UserFinder;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,5 +80,16 @@ public class InquiryServiceImpl implements InquiryService {
         inquiry.answerInquiry(admin, answer);         // 엔티티 메서드로 상태 + 답변 + 관리자 반영
     }
 
-
+    // 페이징
+    @Override
+    public Page<InquiryResponse> inquirySearch(InquirySearchRequest request) {
+        return inquiryRepository.search(request)
+                .map(inquiry -> new InquiryResponse(
+                        inquiry.getUser().getId(),
+                        inquiry.getTitle(),
+                        inquiry.getContent(),
+                        inquiry.getStatus(),
+                        inquiry.getAnswer()
+                ));
+    }
 }

@@ -4,7 +4,7 @@ public record InquiryResponse (
         Long seller,
         String title,
         String content,
-        char status,
+        String status,
         String answer
 ){
 

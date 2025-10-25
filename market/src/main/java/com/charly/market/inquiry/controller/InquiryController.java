@@ -1,9 +1,10 @@
 package com.charly.market.inquiry.controller;
 
+import com.charly.market.admin.log.model.dto.PageResponse;
 import com.charly.market.inquiry.model.dto.AnswerInquiryRequest;
 import com.charly.market.inquiry.model.dto.CreateInquiryRequest;
 import com.charly.market.inquiry.model.dto.InquiryResponse;
-import com.charly.market.inquiry.model.entity.Inquiry;
+import com.charly.market.inquiry.model.dto.InquirySearchRequest;
 import com.charly.market.inquiry.repository.InquiryRepository;
 import com.charly.market.inquiry.service.InquiryService;
 import jakarta.validation.constraints.NotNull;
@@ -54,6 +55,11 @@ public class InquiryController {
         return ResponseEntity.ok("답변 완료 처리 성공");
     }
 
+    // 페이징
+    @GetMapping("/search")
+    public PageResponse<InquiryResponse> InquarySearchList(InquirySearchRequest request) {
+        return PageResponse.of(inquiryService.inquirySearch(request));
+    }
 
 
 }
