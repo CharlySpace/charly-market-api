@@ -1,0 +1,70 @@
+package com.charly.market.auth.service.provider;
+
+import com.charly.market.auth.model.dto.OAuthUserInfo;
+import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+
+@Component("kakao")
+@RequiredArgsConstructor
+public class KakaoOAuth2Provider implements OAuth2Provider {
+
+  private final RestTemplate restTemplate = new RestTemplate();
+
+  @Value("${oauth2.kakao.client-id}")
+  private String clientId;
+
+  @Value("${oauth2.kakao.redirect-uri}")
+  private String redirectUri;
+
+  @Override
+  public OAuthUserInfo getUserInfo(String code) {
+    // 1. 인가 코드 → 액세스 토큰 요청
+    MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+    params.add("grant_type", "authorization_code");
+    params.add("client_id", clientId);
+    params.add("redirect_uri", redirectUri);
+    params.add("code", code);
+
+    ResponseEntity<Map> tokenResponse = restTemplate.postForEntity(
+        "https://kauth.kakao.com/oauth/token",
+        new HttpEntity<>(params, createHeaders()),
+        Map.class
+    );
+
+    String accessToken = (String) tokenResponse.getBody().get("access_token");
+
+    // 2. 사용자 정보 요청
+    HttpHeaders headers = createHeaders();
+    headers.add("Authorization", "Bearer " + accessToken);
+    ResponseEntity<Map> userResponse = restTemplate.exchange(
+        "https://kapi.kakao.com/v2/user/me",
+        HttpMethod.GET,
+        new HttpEntity<>(headers),
+        Map.class
+    );
+
+    Map<String, Object> kakaoAccount = (Map<String, Object>) userResponse.getBody().get("kakao_account");
+    Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
+
+    return new OAuthUserInfo(
+        (String) kakaoAccount.get("email"),
+        (String) profile.get("nickname")
+    );
+  }
+
+  private HttpHeaders createHeaders() {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+    return headers;
+  }
+}
