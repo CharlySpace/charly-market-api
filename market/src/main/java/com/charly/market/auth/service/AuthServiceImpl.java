@@ -1,8 +1,8 @@
 package com.charly.market.auth.service;
 
-import com.charly.market.auth.model.dto.AuthDtos.LoginRequest;
-import com.charly.market.auth.model.dto.AuthDtos.RefreshRequest;
-import com.charly.market.auth.model.dto.AuthDtos.TokenResponse;
+import com.charly.market.auth.model.dto.AuthRequest.LoginRequest;
+import com.charly.market.auth.model.dto.AuthRequest.RefreshRequest;
+import com.charly.market.auth.model.dto.AuthRequest.TokenResponse;
 import com.charly.market.auth.repository.AuthRedisRepository;
 import com.charly.market.global.security.JwtProperties;
 import com.charly.market.global.security.JwtTokenProvider;

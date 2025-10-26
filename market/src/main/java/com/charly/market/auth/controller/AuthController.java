@@ -1,8 +1,10 @@
 package com.charly.market.auth.controller;
 
-import com.charly.market.auth.model.dto.AuthDtos;
-import com.charly.market.auth.model.dto.AuthDtos.TokenResponse;
+import com.charly.market.auth.model.dto.AuthRequest;
+import com.charly.market.auth.model.dto.AuthRequest.TokenResponse;
+import com.charly.market.auth.model.dto.OAuthLoginRequest;
 import com.charly.market.auth.service.AuthService;
+import com.charly.market.auth.service.OAuth2Service;
 import com.charly.market.global.security.JwtTokenProvider;
 import com.charly.market.global.security.UserPrincipal;
 import io.jsonwebtoken.Claims;
@@ -12,6 +14,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -25,13 +28,23 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
   private final AuthService authService;
   private final JwtTokenProvider tokenProvider;
+  private final OAuth2Service oAuth2Service;
+
   @PostMapping("/login")
-  public ResponseEntity<TokenResponse> login(@Valid @RequestBody AuthDtos.LoginRequest req) {
+  public ResponseEntity<TokenResponse> login(@Valid @RequestBody AuthRequest.LoginRequest req) {
     return ResponseEntity.ok(authService.login(req));
   }
 
+  @PostMapping("/login/oauth2/{provider}")
+  public ResponseEntity<TokenResponse> oauthLogin(
+      @PathVariable String provider,
+      @RequestBody OAuthLoginRequest req
+  ) {
+    return ResponseEntity.ok(oAuth2Service.login(provider, req));
+  }
+
   @PostMapping("/refresh")
-  public ResponseEntity<TokenResponse> refresh(@Valid @RequestBody AuthDtos.RefreshRequest req) {
+  public ResponseEntity<TokenResponse> refresh(@Valid @RequestBody AuthRequest.RefreshRequest req) {
     return ResponseEntity.ok(authService.refresh(req));
   }
 
