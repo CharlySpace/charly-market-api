@@ -4,7 +4,7 @@ import com.charly.market.auth.model.dto.AuthRequest;
 import com.charly.market.auth.model.dto.AuthRequest.TokenResponse;
 import com.charly.market.auth.model.dto.OAuthLoginRequest;
 import com.charly.market.auth.service.AuthService;
-import com.charly.market.auth.service.OAuth2Service;
+//import com.charly.market.auth.service.OAuth2Service;
 import com.charly.market.global.security.JwtTokenProvider;
 import com.charly.market.global.security.UserPrincipal;
 import io.jsonwebtoken.Claims;
@@ -29,20 +29,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
   private final AuthService authService;
   private final JwtTokenProvider tokenProvider;
-  private final OAuth2Service oAuth2Service;
+//  private final OAuth2Service oAuth2Service;
 
   @PostMapping("/login")
   public ResponseEntity<TokenResponse> login(@Valid @RequestBody AuthRequest.LoginRequest req) {
     return ResponseEntity.ok(authService.login(req));
   }
 
-  @GetMapping("/oauth2/{provider}")
-  public ResponseEntity<TokenResponse> oauthLogin(
-      @PathVariable String provider,
-      @RequestParam String code
-  ) {
-    return ResponseEntity.ok(oAuth2Service.login(provider, code));
-  }
+//  @GetMapping("/oauth2/{provider}")
+//  public ResponseEntity<TokenResponse> oauthLogin(
+//      @PathVariable String provider,
+//      @RequestParam String code
+//  ) {
+//    return ResponseEntity.ok(oAuth2Service.login(provider, code));
+//  }
 
   @PostMapping("/refresh")
   public ResponseEntity<TokenResponse> refresh(@Valid @RequestBody AuthRequest.RefreshRequest req) {
