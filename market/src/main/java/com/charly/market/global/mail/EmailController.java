@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/email")
+@RequestMapping("api/v1/email")
 public class EmailController {
 
     private final EmailService emailService;
@@ -15,7 +15,8 @@ public class EmailController {
 
     // 인증번호 발송
     @PostMapping("/send")
-    public String sendAuth(@RequestBody @Valid EmailRequest req) {
+    public String sendAuth(@RequestBody EmailRequest req) {
+        System.out.println(req.getEmail());
         emailService.sendAuthEmail(req.getEmail());
         return "인증번호 발송 완료!";
     }
