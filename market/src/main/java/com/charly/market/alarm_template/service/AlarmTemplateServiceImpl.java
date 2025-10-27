@@ -3,8 +3,13 @@ package com.charly.market.alarm_template.service;
 import com.charly.market.alarm_template.model.dto.AlarmTemplateChangeContentRequest;
 import com.charly.market.alarm_template.model.dto.AlarmTemplateRequest;
 import com.charly.market.alarm_template.model.dto.AlarmTemplateResponse;
+import com.charly.market.alarm_template.model.dto.CreateAlarmTemplateRequest;
 import com.charly.market.alarm_template.model.entity.AlarmTemplate;
 import com.charly.market.alarm_template.repository.AlarmTemplateRepository;
+import com.charly.market.alarmbox.model.dto.CreateAlarmBoxRequest;
+import com.charly.market.category.repository.CategoryRepository;
+import com.charly.market.category.service.util.CategoryFinder;
+import com.charly.market.user.service.util.UserFinder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,14 +26,16 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 public class AlarmTemplateServiceImpl implements AlarmTemplateService {
 
     private final AlarmTemplateRepository alarmTemplateRepository;
+    private final CategoryFinder categoryFinder;
 
     // 생성
     @Override
-    public void createAlarmTemplate(AlarmTemplateRequest request) {
+    public void createAlarmTemplate(CreateAlarmTemplateRequest request) {
         //생성자 생성
         AlarmTemplate alarmTemplate = AlarmTemplate.builder()
                 .status(request.status())
                 .content(request.content())
+                .category(categoryFinder.getById(request.categoryId()))
                 .build();
         System.out.println(alarmTemplate);
         alarmTemplateRepository.save(alarmTemplate);

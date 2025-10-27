@@ -3,9 +3,11 @@ package com.charly.market.account.controller;
 
 import com.charly.market.account.model.dto.AccountRequest;
 import com.charly.market.account.model.dto.AccountResponse;
+import com.charly.market.account.model.dto.AccountSearchRequest;
 import com.charly.market.account.model.dto.AccountUpdateRequest;
 import com.charly.market.account.repository.AccountRepository;
 import com.charly.market.account.service.AccountService;
+import com.charly.market.admin.log.model.dto.PageResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +33,12 @@ public class AccountController {
     List<AccountResponse> accountList = accountService.findAll();
     return ResponseEntity.ok(accountList);
   }
-  
+
+  @GetMapping("/search")
+  public PageResponse<AccountResponse> search(AccountSearchRequest request) {
+    return PageResponse.of(accountService.search(request));
+  }
+
 
   @PostMapping()
   public ResponseEntity<String> createAccount(@RequestBody AccountRequest account) {

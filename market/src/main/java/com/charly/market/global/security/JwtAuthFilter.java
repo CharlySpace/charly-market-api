@@ -8,21 +8,19 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.stream.Stream;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.server.PathContainer;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.pattern.PathPatternParser;
 
 public class JwtAuthFilter extends OncePerRequestFilter {
 
   private final JwtTokenProvider tokenProvider;
   private final AuthRedisRepository authRedis;
-  private final AntPathMatcher matcher = new AntPathMatcher();
-
-  private static final String[] PUBLIC = {
-      "/api/v1/auth/**", "/actuator/**" , "/email/**"
-  };
+  private static final PathPatternParser parser = new PathPatternParser();
 
   public JwtAuthFilter(JwtTokenProvider tokenProvider, AuthRedisRepository authRedis) {
     this.tokenProvider = tokenProvider;
@@ -32,10 +30,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
   @Override
   protected boolean shouldNotFilter(HttpServletRequest request) {
     String path = request.getRequestURI();
-    for (String pattern : PUBLIC) {
-      if (matcher.match(pattern, path)) return true;
-    }
-    return false;
+    return Stream.of("/test/**", "/api/v1/**", "/actuator/**", "/favicon.ico", "/.well-known/**")
+                 .anyMatch(pattern -> parser.parse(pattern).matches(PathContainer.parsePath(path)));
   }
 
   @Override

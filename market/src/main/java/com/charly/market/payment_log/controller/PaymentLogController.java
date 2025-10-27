@@ -6,38 +6,45 @@ import com.charly.market.payment_log.model.dto.PaymentLogResponse;
 import com.charly.market.payment_log.model.dto.PaymentLogSearchRequest;
 import com.charly.market.payment_log.repository.PaymentLogRepository;
 import com.charly.market.payment_log.service.PaymentLogService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping ("api/v1/paymentLog")
+@RequestMapping("api/v1/paymentLog")
 public class PaymentLogController {
 
-    private final PaymentLogService paymentLogService;
-    private final PaymentLogRepository paymentLogRepository;
+  private final PaymentLogService paymentLogService;
+  private final PaymentLogRepository paymentLogRepository;
 
-    @GetMapping
-    public ResponseEntity<List<PaymentLogResponse>> findAllPaymentLogs() {
-        List<PaymentLogResponse>paymentLogResponseList=paymentLogService.getPaymentLogs();
+  @GetMapping
+  public ResponseEntity<List<PaymentLogResponse>> findAllPaymentLogs() {
+    List<PaymentLogResponse> paymentLogResponseList = paymentLogService.getPaymentLogs();
     return ResponseEntity.ok(paymentLogResponseList);
-    }
-    @GetMapping("/search")
-    public PageResponse<PaymentLogResponse> search(PaymentLogSearchRequest request){
-        return PageResponse.of(paymentLogService.searchPaymentLogs(request));
-    }
+  }
 
-    @PostMapping
-    public ResponseEntity<String> createPaymentLog(@RequestBody CreatePaymentLogRequest paymentLog) {
-        paymentLogService.createPaymentLog(paymentLog);
-        return ResponseEntity.ok("결제 이력이 저장되었습니다.");
-    }
-    @DeleteMapping("{paymentLogId}")
-    public ResponseEntity<String> deletePaymentLog(@PathVariable Long paymentLogId) {
-        paymentLogRepository.deleteById(paymentLogId);
-        return ResponseEntity.ok("삭제 완료");
-    }
+  @GetMapping("/search")
+  public PageResponse<PaymentLogResponse> search(PaymentLogSearchRequest request) {
+    return PageResponse.of(paymentLogService.searchPaymentLogs(request));
+  }
+
+  @PostMapping
+  public ResponseEntity<String> createPaymentLog(@RequestBody CreatePaymentLogRequest paymentLog) {
+    paymentLogService.createPaymentLog(paymentLog);
+    return ResponseEntity.ok("결제 이력이 저장되었습니다.");
+  }
+
+  @DeleteMapping("{paymentLogId}")
+  public ResponseEntity<String> deletePaymentLog(@PathVariable Long paymentLogId) {
+    paymentLogRepository.deleteById(paymentLogId);
+    return ResponseEntity.ok("삭제 완료");
+  }
 }

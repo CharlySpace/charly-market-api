@@ -1,8 +1,8 @@
 package com.charly.market.auth.service;
 
-import com.charly.market.auth.model.dto.AuthDtos.LoginRequest;
-import com.charly.market.auth.model.dto.AuthDtos.RefreshRequest;
-import com.charly.market.auth.model.dto.AuthDtos.TokenResponse;
+import com.charly.market.auth.model.dto.AuthRequest.LoginRequest;
+import com.charly.market.auth.model.dto.AuthRequest.RefreshRequest;
+import com.charly.market.auth.model.dto.AuthRequest.TokenResponse;
 import com.charly.market.auth.repository.AuthRedisRepository;
 import com.charly.market.global.security.JwtProperties;
 import com.charly.market.global.security.JwtTokenProvider;
@@ -35,7 +35,7 @@ public class AuthServiceImpl implements AuthService {
     TokenPair pair = tokenProvider.createTokens(user.getUsername(), String.valueOf(user.getRole()));
 
     // Refresh 저장(디바이스별 세션 1개)
-    redis.saveRefresh(user.getUsername(), req.deviceId(), pair.refreshToken(), props.refreshTtl());
+    redis.saveRefresh(user.getUsername(), pair.refreshToken(), props.refreshTtl());
 
     return new TokenResponse(
         pair.accessToken(), props.accessTtl().toSeconds(),
@@ -52,7 +52,7 @@ public class AuthServiceImpl implements AuthService {
     String username = tokenProvider.getUsername(jws);
 
     // 2) Redis 세션 검증(저장된 refresh와 동일한가)
-    String saved = redis.getRefresh(username, req.deviceId())
+    String saved = redis.getRefresh(username)
                         .orElseThrow(() -> new IllegalStateException("NO_REFRESH_SESSION"));
     if (!saved.equals(req.refreshToken())) {
       throw new IllegalStateException("ROTATED_OR_REVOKED_REFRESH");
@@ -65,7 +65,7 @@ public class AuthServiceImpl implements AuthService {
     TokenPair newPair = tokenProvider.createTokens(user.getUsername(), String.valueOf(user.getRole()));
 
     // 4) 기존 refresh 폐기 → 새 refresh 저장(회전)
-    redis.saveRefresh(user.getUsername(), req.deviceId(), newPair.refreshToken(), props.refreshTtl());
+    redis.saveRefresh(user.getUsername(), newPair.refreshToken(), props.refreshTtl());
 
     return new TokenResponse(
         newPair.accessToken(), props.accessTtl().toSeconds(),
@@ -73,9 +73,9 @@ public class AuthServiceImpl implements AuthService {
     );
   }
 
-  public void logout(String username, String deviceId, String currentAccessJti) {
+  public void logout(String username, String currentAccessJti) {
     // 1) 세션 제거
-    redis.deleteRefresh(username, deviceId);
+    redis.deleteRefresh(username);
     // 2) 현재 Access 블랙리스트(남은 TTL 만큼)
     Duration remaining = props.accessTtl(); // 엄밀히는 exp-현재 시간을 계산해도 됨
     if (currentAccessJti != null) {
