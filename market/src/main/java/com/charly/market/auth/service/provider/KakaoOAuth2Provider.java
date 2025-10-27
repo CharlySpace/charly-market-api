@@ -42,6 +42,7 @@ public class KakaoOAuth2Provider implements OAuth2Provider {
     );
 
     String accessToken = (String) tokenResponse.getBody().get("access_token");
+    System.out.println("엑세스 토큰 : " + accessToken);
 
     // 2. 사용자 정보 요청
     HttpHeaders headers = createHeaders();
