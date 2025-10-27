@@ -63,3 +63,12 @@ public class InquiryController {
 
 
 }
+
+
+
+
+
+
+
+
+
