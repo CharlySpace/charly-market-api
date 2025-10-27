@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>OAuth2 Result</title>
+</head>
+<body>
+<h2>OAuth2 로그인 결과</h2>
+<p><b>Access Token:</b> <span th:text="${accessToken}"></span></p>
+<p><b>Refresh Token:</b> <span th:text="${refreshToken}"></span></p>
+<p><b>Access JTI:</b> <span th:text="${jti}"></span></p>
+
+<a href="/test/oauth2">⬅ 다시 테스트</a>
+</body>
+</html>

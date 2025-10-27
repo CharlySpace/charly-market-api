@@ -2,7 +2,7 @@ package com.charly.market.auth.model.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class AuthDtos {
+public class AuthRequest {
   public record LoginRequest(
       @NotBlank String username,
       @NotBlank String password,
