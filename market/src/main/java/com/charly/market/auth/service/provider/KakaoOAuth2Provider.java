@@ -14,17 +14,23 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+/*
+* 카카오 로그인 이메일 못받는 이슈로 사용 중지
+* */
 @Component("kakao")
 @RequiredArgsConstructor
 public class KakaoOAuth2Provider implements OAuth2Provider {
 
-  private final RestTemplate restTemplate = new RestTemplate();
+  private final RestTemplate restTemplate;
 
   @Value("${oauth2.kakao.client-id}")
   private String clientId;
 
   @Value("${oauth2.kakao.redirect-uri}")
   private String redirectUri;
+
+  @Value("${oauth2.kakao.client-secret}")
+  private String clientSecret;
 
   @Override
   public OAuthUserInfo getUserInfo(String code) {
@@ -33,14 +39,16 @@ public class KakaoOAuth2Provider implements OAuth2Provider {
     params.add("grant_type", "authorization_code");
     params.add("client_id", clientId);
     params.add("redirect_uri", redirectUri);
+    params.add("client_secret", clientSecret);
     params.add("code", code);
 
+    System.out.println("파라미터 : " + params);
     ResponseEntity<Map> tokenResponse = restTemplate.postForEntity(
         "https://kauth.kakao.com/oauth/token",
         new HttpEntity<>(params, createHeaders()),
         Map.class
     );
-
+    System.out.println("redis 활용 ");
     String accessToken = (String) tokenResponse.getBody().get("access_token");
     System.out.println("엑세스 토큰 : " + accessToken);
 

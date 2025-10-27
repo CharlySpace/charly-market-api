@@ -19,6 +19,7 @@ import com.charly.market.user.model.entity.User;
 import com.charly.market.user.repository.UserRepository;
 import java.time.Duration;
 import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,7 +51,7 @@ class OAuth2ServiceUnitTest {
   void testOAuthLogin_NewUser() {
     // given
     OAuthUserInfo userInfo = new OAuthUserInfo("test@kakao.com", "홍길동");
-    OAuthLoginRequest req = new OAuthLoginRequest("dummy-code", "device-123");
+    String code = UUID.randomUUID().toString();
 
     when(userRepository.findByEmail(userInfo.getEmail())).thenReturn(Optional.empty());
     when(userRepository.save(any(User.class)))
@@ -62,11 +63,11 @@ class OAuth2ServiceUnitTest {
     when(props.accessTtl()).thenReturn(Duration.ofHours(1));
 
     // when
-    TokenResponse response = oAuth2Service.login("kakao", req);
+    TokenResponse response = oAuth2Service.login("kakao", code);
 
     // then
     assertThat(response.accessToken()).isEqualTo("accessToken");
     verify(userRepository, times(1)).save(any(User.class));
-    verify(redis, times(1)).saveRefresh(anyString(), anyString(), anyString(), any());
+    verify(redis, times(1)).saveRefresh(anyString(), anyString(), any());
   }
 }

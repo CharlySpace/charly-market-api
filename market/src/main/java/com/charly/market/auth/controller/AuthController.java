@@ -14,6 +14,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,12 +36,12 @@ public class AuthController {
     return ResponseEntity.ok(authService.login(req));
   }
 
-  @PostMapping("/login/oauth2/{provider}")
+  @GetMapping("/oauth2/{provider}")
   public ResponseEntity<TokenResponse> oauthLogin(
       @PathVariable String provider,
-      @RequestBody OAuthLoginRequest req
+      @RequestParam String code
   ) {
-    return ResponseEntity.ok(oAuth2Service.login(provider, req));
+    return ResponseEntity.ok(oAuth2Service.login(provider, code));
   }
 
   @PostMapping("/refresh")
@@ -67,7 +68,7 @@ public class AuthController {
     UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
     String username = principal.username();
 
-    authService.logout(username, deviceId, jti);
+    authService.logout(username, jti);
     return ResponseEntity.ok(Map.of("success", true));
   }
 

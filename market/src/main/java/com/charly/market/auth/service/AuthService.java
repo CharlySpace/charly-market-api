@@ -7,5 +7,5 @@ import com.charly.market.auth.model.dto.AuthRequest.TokenResponse;
 public interface AuthService {
   TokenResponse login(LoginRequest req);
   TokenResponse refresh(RefreshRequest req);
-  void logout(String username, String deviceId, String currentAccessJti);
+  void logout(String username, String currentAccessJti);
 }

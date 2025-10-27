@@ -29,11 +29,13 @@ public class OAuth2Service {
   private final DefaultGradeProvider defaultGradeProvider;
 
   @Transactional
-  public TokenResponse login(String providerName, OAuthLoginRequest req) {
+  public TokenResponse login(String providerName, String code) {
     OAuth2Provider provider = providers.get(providerName.toLowerCase());
     if (provider == null) throw new IllegalArgumentException("UNSUPPORTED_PROVIDER");
 
-    OAuthUserInfo userInfo = provider.getUserInfo(req.code());
+    OAuthUserInfo userInfo = provider.getUserInfo(code);
+    System.out.println("user email = " + userInfo.getEmail());
+    System.out.println("user nickname = " + userInfo.getNickname());
 
     User user = userRepository.findByEmail(userInfo.getEmail())
                               .orElseGet(() -> userRepository.save(
@@ -53,9 +55,10 @@ public class OAuth2Service {
                                       .build()
                               ));
 
+    System.out.println("절차 완료");
     TokenPair pair = tokenProvider.createTokens(user.getUsername(), user.getRole().name());
 
-    redis.saveRefresh(user.getUsername(), req.deviceId(), pair.refreshToken(), props.refreshTtl());
+    redis.saveRefresh(user.getUsername(), pair.refreshToken(), props.refreshTtl());
 
     return new TokenResponse(
         pair.accessToken(), props.accessTtl().toSeconds(),
