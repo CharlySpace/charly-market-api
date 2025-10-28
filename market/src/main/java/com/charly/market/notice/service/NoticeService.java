@@ -15,4 +15,6 @@ public interface NoticeService {
     void delete(Long id);
     void changeContent(ChangeContentRequest req);
     Page<NoticeResponse> noticeSearch(NoticeSearchRequest request);
+
+
 }
